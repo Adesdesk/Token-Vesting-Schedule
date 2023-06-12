@@ -1,112 +1,76 @@
-import { useState } from 'react';
-import { ethers } from 'ethers';
-import TokenContractJSON from '../contractABIs/TokenContract.json';
+import React, { useState } from 'react';
 import 'tailwindcss/tailwind.css';
+import { connectWallet, getAccountBalance } from './wallet';
+import { ethers } from 'ethers';
+const Token = require('../contractABIs/TokenContract.json');
 
-const tokenContractABI = TokenContractJSON.abi;
-const tokenContractBytecode = TokenContractJSON.bytecode;
-
-export default function DeployContractForm() {
+const MintPage = () => {
+  const [errorMessage, setErrorMessage] = useState(null);
+  const [successMessage, setSuccessMessage] = useState(null);
   const [tokenName, setTokenName] = useState('');
   const [tokenSymbol, setTokenSymbol] = useState('');
-  const [totalSupply, setTotalSupply] = useState('');
-  const [contractAddress, setContractAddress] = useState(null);
-  const [error, setError] = useState(null);
-  const [isConnecting, setIsConnecting] = useState(false);
+  const [tokenSupply, setTokenSupply] = useState('');
 
-  async function connectWallet() {
+  const deployContract = async () => {
     try {
-      setIsConnecting(true);
-      await window.ethereum.request({ method: 'eth_requestAccounts' });
-      setIsConnecting(false);
-    } catch (error) {
-      console.error('Error connecting wallet:', error);
-      setIsConnecting(false);
-      setError('Failed to connect wallet');
-    }
-  }
+      const signer = await connectWallet();
+      const accountBalance = await getAccountBalance(signer);
 
-  async function deployContract() {
-    try {
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const signer = provider.getSigner();
+      const rpcUrl = 'https://polygon-mumbai.g.alchemy.com/v2/4xqAcLubsZxZcvye8Khs4hcwMDZrHsBp';
+      const provider = new ethers.providers.JsonRpcProvider(rpcUrl);
 
-      const factory = new ethers.ContractFactory(tokenContractABI, tokenContractBytecode, signer);
-      const contract = await factory.deploy(tokenName, tokenSymbol, totalSupply);
+      const contractFactory = new ethers.ContractFactory(Token.abi, Token.bytecode, signer);
+      const tokenSupplyII = ethers.utils.parseEther(tokenSupply);
+      const contract = await contractFactory.connect(provider).deploy(tokenName, tokenSymbol, tokenSupplyII);
       await contract.deployed();
 
-      console.log('Contract deployed successfully. Address:', contract.address);
-      setContractAddress(contract.address);
+      console.log('Contract deployed:', contract.address);
+      console.log('Account balance:', accountBalance);
+      setSuccessMessage('Contract deployed successfully!'); // Set success message
+      setErrorMessage(null); // Clear error message
+      // Perform additional actions with the deployed contract
     } catch (error) {
-      console.error('Error deploying contract:', error);
-      setError('Failed to deploy contract');
+      setErrorMessage('Contract deployment failed.'); // Set error message
+      setSuccessMessage(null); // Clear success message
     }
-  }
+  };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-green-200 mx-auto">
-        
-      <div className="text-center mt-4">
-        <button
-          className={`text-blue-500 px-4 py-2 rounded bg-white hover:underline ${isConnecting ? 'opacity-50 cursor-not-allowed' : ''}`}
-          onClick={connectWallet}
-          disabled={isConnecting}
-        >
-          {isConnecting ? 'Connecting...' : 'Connect Wallet'}
-        </button>
-      </div>
-      <h1 className="text-3xl font-bold mb-4">Deploy Your Organization's Token Contract</h1>
-
-      {contractAddress ? (
-        <div className="bg-green-100 border border-green-300 text-green-900 px-4 py-3 rounded mb-4">
-          Contract deployed successfully. Address: {contractAddress}
-        </div>
-      ) : null}
-
-      {error ? (
-        <div className="bg-red-100 border border-red-300 text-red-900 px-4 py-3 rounded mb-4">
-          {error}
-        </div>
-      ) : null}
-
-      <div className="flex mb-4">
-        <label className="w-1/3 text-right mr-4">Token Name:</label>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-green-200">
+      <h4 className="text-2xl font-bold my-8">Mint Token</h4>
+      <div className="bg-white p-4 rounded-md shadow-lg mb-4">
+        <label className="text-lg font-semibold mb-2">Token Name:</label>
         <input
           type="text"
-          className="border border-gray-300 px-2 py-1 flex-grow"
+          className="border border-gray-300 px-4 py-2 rounded-md w-full mb-4"
           value={tokenName}
           onChange={(e) => setTokenName(e.target.value)}
         />
-      </div>
-
-      <div className="flex mb-4">
-        <label className="w-1/3 text-right mr-4">Token Symbol:</label>
+        <label className="text-lg font-semibold mb-2">Token Symbol:</label>
         <input
           type="text"
-          className="border border-gray-300 px-2 py-1 flex-grow"
+          className="border border-gray-300 px-4 py-2 rounded-md w-full mb-4"
           value={tokenSymbol}
           onChange={(e) => setTokenSymbol(e.target.value)}
         />
-      </div>
-
-      <div className="flex mb-4">
-        <label className="w-1/3 text-right mr-4">Total Supply:</label>
+        <label className="text-lg font-semibold mb-2">Token Supply:</label>
         <input
           type="text"
-          className="border border-gray-300 px-2 py-1 flex-grow"
-          value={totalSupply}
-          onChange={(e) => setTotalSupply(e.target.value)}
+          className="border border-gray-300 px-4 py-2 rounded-md w-full mb-4"
+          value={tokenSupply}
+          onChange={(e) => setTokenSupply(e.target.value)}
         />
-      </div>
-      <div className="flex justify-center">
         <button
-          className={`bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded ${isConnecting ? 'opacity-50 cursor-not-allowed' : ''}`}
+          className="px-4 py-2 bg-blue-500 text-white rounded-md"
           onClick={deployContract}
-          disabled={isConnecting}
         >
-          {isConnecting ? 'Connecting...' : 'Deploy Contract'}
+          Deploy Contract
         </button>
       </div>
+      {errorMessage && <p className="text-red-500">{errorMessage}</p>}
+      {successMessage && <p className="text-green-500">{successMessage}</p>}
     </div>
   );
-}
+};
+
+export default MintPage;
