@@ -51,6 +51,3 @@ contract Token {
     }
 }
 
-// CompanyToken contract deployed to address: 0x196A4868d590afc7C6DDc6c67bE738DE97aAcd33
-// TokenVesting contract deployed to: 0xbf99061e15Fdafc667118554Ff3Bb3aCcE28b1Dc
-// Organization contract deployed to: 0x53B6F6397543150b0C1f3c43e208a5dAa2Ee723f
