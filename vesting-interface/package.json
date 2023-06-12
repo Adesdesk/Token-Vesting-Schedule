@@ -9,7 +9,8 @@
     "ethers": "^6.5.1",
     "next": "latest",
     "react": "18.2.0",
-    "react-dom": "18.2.0"
+    "react-dom": "18.2.0",
+    "react-web3-provider": "^1.1.2"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.14",
