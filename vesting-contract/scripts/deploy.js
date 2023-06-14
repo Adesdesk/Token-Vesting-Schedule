@@ -11,14 +11,12 @@
 const hre = require("hardhat");
 
 
-// Set up Ethereum wallet
-const [deployer] = await ethers.getSigners();
-
-// Indicate a grab of CustomToken.sol
-console.log("Deploying the CustomToken contract with the account:", deployer.address);
-
-
 async function deploy() {
+  // Set up Ethereum wallet
+  const [deployer] = await ethers.getSigners();
+
+  // Indicate a grab of CustomToken.sol
+  console.log("Deploying the CustomToken contract with the account:", deployer.address);
   // Deploy CustomToken contract
   // Set up the CustomToken contract factory
   const CustomToken = await hre.ethers.getContractFactory("CustomToken");
