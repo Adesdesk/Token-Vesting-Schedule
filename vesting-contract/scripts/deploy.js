@@ -8,45 +8,43 @@
 // Deploy script for Token smart contract on Hardhat
 
 // Import Hardhat environment and Ethereum libraries
-const { ethers } = require("hardhat");
+const hre = require("hardhat");
 
-async function main() {
-  // Set up Ethereum wallet
-  const [deployer] = await ethers.getSigners();
 
-  // Grab MyToken.sol
-  console.log("Deploying the Token contract with the account:", deployer.address);
-  // Set up the Token contract factory
-  const Token = await ethers.getContractFactory("Token");
-  const TokenVesting = await ethers.getContractFactory("TokenVesting");
-  const Organization = await ethers.getContractFactory("Organization");
-  const totalSupply = ethers.utils.parseEther("1000");
-  // Deploy the Token contract
-  const token = await Token.deploy("CompanyToken", "CTK", totalSupply);
+// Set up Ethereum wallet
+const [deployer] = await ethers.getSigners();
 
-  await token.deployed();
-  // display success and address
-  console.log("CompanyToken contract deployed to address:", token.address);
+// Indicate a grab of CustomToken.sol
+console.log("Deploying the CustomToken contract with the account:", deployer.address);
 
-  // Deploy the TokenVesting contract
-  const tokenVesting = await TokenVesting.deploy(token.address);
-  await tokenVesting.deployed();
 
-  // Print TokenVesting contract details
-  console.log("TokenVesting contract deployed to:", tokenVesting.address);
+async function deploy() {
+  // Deploy CustomToken contract
+  // Set up the CustomToken contract factory
+  const CustomToken = await hre.ethers.getContractFactory("CustomToken");
+  const customToken = await CustomToken.deploy();
+  await customToken.deployed();
+  // Display CustomToken contract deployment details
+  console.log("CustomToken deployed to:", customToken.address);
 
-  // Deploy the Organization contract
-  const organization = await Organization.deploy(token.address);
-  await organization.deployed();
-
-  // Print Organization contract details
-  console.log("Organization contract deployed to:", organization.address);
-  
+  // Deploy VestingContract contract
+  // Set up the VestingContract contract factory
+  const VestingContract = await hre.ethers.getContractFactory("VestingContract");
+  const vestingContract = await VestingContract.deploy(customToken.address);
+  await vestingContract.deployed();
+  // Display VestingContract contract deployment details
+  console.log("VestingContract deployed to:", vestingContract.address);
 }
 
+// invoke the deploy() function
+deploy()
+  .then(() => process.exit(0))
+  .catch((error) => {
+    console.error(error);
+    process.exit(1);
+  });
 
-// Run the main function
-main().then(() => process.exit(0)).catch(error => {
-  console.error(error);
-  process.exit(1);
-});
+
+
+
+
