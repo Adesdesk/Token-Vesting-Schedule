@@ -4,13 +4,15 @@ import { useEffect, useState } from 'react';
 import { ethers } from 'ethers';
 import CustomTokenABI from '../contractABIs/CustomToken.json';
 import VestingContractABI from '../contractABIs/VestingContract.json';
-import { connectWallet, getAccountBalance } from './wallet';
+import { connectWallet, getAccountBalance } from '../utils/wallet';
 
 const customTokenAddress = '0xCF23CcD7160CA7Bb2f72216a55b622C207933192';
 const vestingContractAddress = '0xfC50Ae26CF1EdEC244dDcD2186ba2A2D857CaAD3';
 
 export default function RegisterOrgToken() {
-  const [connected, setConnected] = useState(false);
+  /*const [connected, setConnected] = useState(false);*/
+  const [isWalletConnected, setIsWalletConnected] = useState(false);
+  const [errorMessage, setErrorMessage] = useState(null);
   const [account, setAccount] = useState(null);
   const [balance, setBalance] = useState(null);
   const [customName, setCustomName] = useState('');
@@ -22,20 +24,20 @@ export default function RegisterOrgToken() {
   const [vestingSchedules, setVestingSchedules] = useState([]);
 
   useEffect(() => {
-    connectToWallet();
+    connectWalletHandler();
   }, []);
-
-  const connectToWallet = async () => {
-    try {
-      const account = await connectWallet();
-      setConnected(true);
-      setAccount(account);
-
-      const balance = await getAccountBalance(account);
-      setBalance(balance);
-    } catch (error) {
-      console.error(error);
-    }
+  const connectWalletHandler = () => {
+    connectWallet()
+      .then((result) => {
+        accountChangedHandler(result);
+        setConnButtonText('Wallet Connected');
+        getAccountBalance(result).then((balance) => {
+          setUserBalance(balance);
+        });
+      })
+      .catch((error) => {
+        setErrorMessage(error);
+      });
   };
 
   const mintCustomToken = async () => {
@@ -95,7 +97,7 @@ export default function RegisterOrgToken() {
 
   return (
     <div className="flex flex-col min-h-screen items-center justify-center bg-green-200">
-      {connected ? (
+      {isWalletConnected ? (
         <>
           <h1>Connected Account: {account}</h1>
           <h2>Account Balance: {balance}</h2>
@@ -186,7 +188,7 @@ export default function RegisterOrgToken() {
           </div>
         </>
       ) : (
-        <button onClick={connectToWallet}>Connect Wallet</button>
+        <button onClick={connectWalletHandler}>Click to Connect Wallet</button>
       )}
     </div>
   );

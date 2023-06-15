@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import 'tailwindcss/tailwind.css';
 import Link from 'next/link';
-import { connectWallet, getAccountBalance } from './wallet';
+import { connectWallet, getAccountBalance } from '../utils/wallet';
 
 const WalletCard = () => {
   const [errorMessage, setErrorMessage] = useState(null);
@@ -65,10 +65,7 @@ const WalletCard = () => {
           <h1 className='pt-30 pb-8 font-bold '>Success! Now proceed to carry out transactions</h1>
           <div className="flex space-x-4">
             <button className="px-4 py-2 bg-blue-500 text-white rounded-md"><Link href="/register-org-token">New Organization</Link></button>
-            {/*<button className="px-4 py-2 bg-blue-500 text-white rounded-md">Register Organization</button>*/}
-            <button className="px-4 py-2 bg-blue-500 text-white rounded-md">Add Stakeholders</button>
-            <button className="px-4 py-2 bg-blue-500 text-white rounded-md">Vesting Schedules</button>
-            <button className="px-4 py-2 bg-blue-500 text-white rounded-md">Claim Tokens</button>
+            <button className="px-4 py-2 bg-blue-500 text-white rounded-md"><Link href="/withdraw-tokens">Claim Tokens</Link></button>
           </div>
         </div>
       )}
