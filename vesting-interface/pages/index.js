@@ -64,7 +64,7 @@ const WalletCard = () => {
           <br></br>
           <h1 className='pt-30 pb-8 font-bold '>Success! Now proceed to carry out transactions</h1>
           <div className="flex space-x-4">
-            <button className="px-4 py-2 bg-blue-500 text-white rounded-md"><Link href="/register_org_token">New Organization</Link></button>
+            <button className="px-4 py-2 bg-blue-500 text-white rounded-md"><Link href="/register-org-token">New Organization</Link></button>
             {/*<button className="px-4 py-2 bg-blue-500 text-white rounded-md">Register Organization</button>*/}
             <button className="px-4 py-2 bg-blue-500 text-white rounded-md">Add Stakeholders</button>
             <button className="px-4 py-2 bg-blue-500 text-white rounded-md">Vesting Schedules</button>
