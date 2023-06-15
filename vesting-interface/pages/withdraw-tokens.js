@@ -1,40 +1,42 @@
 import 'tailwindcss/tailwind.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { ethers } from 'ethers';
 import VestingContractABI from '../contractABIs/VestingContract.json';
 import { connectWallet, getAccountBalance } from '../utils/wallet';
+import { WalletContext } from '../contexts/WalletContext';
 
 const vestingContractAddress = '0xfC50Ae26CF1EdEC244dDcD2186ba2A2D857CaAD3';
 
 export default function WithdrawTokens() {
-  const [isWalletConnected, setIsWalletConnected] = useState(false);
+  const { isWalletConnected, defaultAccount } = useContext(WalletContext);
   const [account, setAccount] = useState(null);
   const [balance, setBalance] = useState(null);
   const [stakingCategory, setStakingCategory] = useState('');
   const [whitelisted, setWhitelisted] = useState(false);
 
   useEffect(() => {
-    connectWalletHandler();
-  }, []);
-  
-  const connectWalletHandler = async () => {
-    try {
-      const result = await connectWallet();
-      accountChangedHandler(result);
-      setConnButtonText('Wallet Connected');
-      const balance = await getAccountBalance(result);
-      setUserBalance(balance);
-  
-      // Check if the user is whitelisted
-      const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const vestingContract = new ethers.Contract(vestingContractAddress, VestingContractABI.abi, provider);
-      const isWhitelisted = await vestingContract.isWhitelisted(account);
-      setWhitelisted(isWhitelisted);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-  
+    setAccount(defaultAccount);
+    getAccountBalance(defaultAccount).then((balance) => {
+      setBalance(balance);
+    });
+
+    const checkWhitelistedStatus = async () => {
+      try {
+        const provider = new ethers.providers.Web3Provider(window.ethereum);
+        const vestingContract = new ethers.Contract(
+          vestingContractAddress,
+          VestingContractABI.abi,
+          provider
+        );
+        const isWhitelisted = await vestingContract.isWhitelisted(defaultAccount);
+        setWhitelisted(isWhitelisted);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    checkWhitelistedStatus();
+  }, [defaultAccount]);
 
   const withdrawTokens = async () => {
     try {
@@ -44,7 +46,11 @@ export default function WithdrawTokens() {
 
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
-      const vestingContract = new ethers.Contract(vestingContractAddress, VestingContractABI.abi, signer);
+      const vestingContract = new ethers.Contract(
+        vestingContractAddress,
+        VestingContractABI.abi,
+        signer
+      );
 
       const tx = await vestingContract.withdrawVestedTokens(stakingCategory);
       await tx.wait();
@@ -85,7 +91,9 @@ export default function WithdrawTokens() {
         <button
           onClick={connectWalletHandler}
           className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-        >Click to Connect Wallet</button>
+        >
+          Click to Connect Wallet
+        </button>
       )}
     </div>
   );

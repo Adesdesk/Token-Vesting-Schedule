@@ -1,17 +1,16 @@
-// pages/register_org_token.js
 import 'tailwindcss/tailwind.css';
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { ethers } from 'ethers';
 import CustomTokenABI from '../contractABIs/CustomToken.json';
 import VestingContractABI from '../contractABIs/VestingContract.json';
 import { connectWallet, getAccountBalance } from '../utils/wallet';
+import { WalletContext } from '../contexts/WalletContext';
 
 const customTokenAddress = '0xCF23CcD7160CA7Bb2f72216a55b622C207933192';
 const vestingContractAddress = '0xfC50Ae26CF1EdEC244dDcD2186ba2A2D857CaAD3';
 
 export default function RegisterOrgToken() {
-  /*const [connected, setConnected] = useState(false);*/
-  const [isWalletConnected, setIsWalletConnected] = useState(false);
+  const { isWalletConnected, defaultAccount } = useContext(WalletContext);
   const [errorMessage, setErrorMessage] = useState(null);
   const [account, setAccount] = useState(null);
   const [balance, setBalance] = useState(null);
@@ -24,15 +23,19 @@ export default function RegisterOrgToken() {
   const [vestingSchedules, setVestingSchedules] = useState([]);
 
   useEffect(() => {
-    connectWalletHandler();
-  }, []);
+    setAccount(defaultAccount);
+    getAccountBalance(defaultAccount).then((balance) => {
+      setBalance(balance);
+    });
+  }, [defaultAccount]);
+
   const connectWalletHandler = () => {
     connectWallet()
       .then((result) => {
-        accountChangedHandler(result);
-        setConnButtonText('Wallet Connected');
+        setAccount(result);
+        setErrorMessage(null);
         getAccountBalance(result).then((balance) => {
-          setUserBalance(balance);
+          setBalance(balance);
         });
       })
       .catch((error) => {
@@ -65,7 +68,11 @@ export default function RegisterOrgToken() {
 
       const provider = new ethers.providers.Web3Provider(window.ethereum);
       const signer = provider.getSigner();
-      const vestingContract = new ethers.Contract(vestingContractAddress, VestingContractABI.abi, signer);
+      const vestingContract = new ethers.Contract(
+        vestingContractAddress,
+        VestingContractABI.abi,
+        signer
+      );
 
       const tx = await vestingContract.createVestingSchedule(
         account,
@@ -86,7 +93,11 @@ export default function RegisterOrgToken() {
       }
 
       const provider = new ethers.providers.Web3Provider(window.ethereum);
-      const vestingContract = new ethers.Contract(vestingContractAddress, VestingContractABI.abi, provider);
+      const vestingContract = new ethers.Contract(
+        vestingContractAddress,
+        VestingContractABI.abi,
+        provider
+      );
 
       const schedules = await vestingContract.vestingSchedules(account, stakingCategory);
       setVestingSchedules(schedules);
