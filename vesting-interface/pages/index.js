@@ -5,9 +5,9 @@ import { connectWallet, getAccountBalance } from './wallet';
 
 const WalletCard = () => {
   const [errorMessage, setErrorMessage] = useState(null);
-  const [defaultAccount, setDefaultAccount] = useState(null);
+  const [defaultAccount, setDefaultAccount] = useState("None");
   const [userBalance, setUserBalance] = useState(null);
-  const [connButtonText, setConnButtonText] = useState('Connect Wallet');
+  const [connButtonText, setConnButtonText] = useState('Click to Connect Wallet');
   const [isWalletConnected, setIsWalletConnected] = useState(false);
 
   const connectWalletHandler = () => {
@@ -46,7 +46,7 @@ const WalletCard = () => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-green-200">
-      <h4 className="text-2xl font-bold my-8">Connect Metamask</h4>
+      <h4 className="text-2xl font-bold my-8">Company Token Vesting Adminstrator DApp</h4>
       <button
         className="px-4 py-2 bg-blue-500 text-white rounded-md mb-4"
         onClick={connectWalletHandler}
