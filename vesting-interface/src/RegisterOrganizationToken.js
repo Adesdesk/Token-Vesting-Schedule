@@ -1,14 +1,23 @@
-/*import React, { useState } from 'react';
-import { ethers } from 'ethers';*/
+import { ethers } from 'ethers';
+
+import React, { useContext } from 'react';
+import { WalletContext } from './utils/WalletProvider';
 
 const RegisterOrganizationToken = () => {
+  const { defaultAccount, userBalance, accountChangedHandler } = useContext(
+    WalletContext
+  );
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-green-500">
-        <p text-green-500>Register Organization and Token </p>
+    <div>
+      <h2>Other Page</h2>
+      <p>Default Account: {defaultAccount}</p>
+      <p>User Balance: {userBalance}</p>
+      <button onClick={() => accountChangedHandler('newAccount')}>
+        Change Account
+      </button>
     </div>
   );
-  
 };
 
 export default RegisterOrganizationToken;
