@@ -58,22 +58,31 @@ const App = () => {
   window.ethereum.on('chainChanged', chainChangedHandler);
 
   return (
-    <div className='walletCard'>
-      <div className='walletCardContent'>
-      <h2>Connect Ethereum Wallet</h2> 
-      <h4>This platform is built on the Polygon Munbai Network</h4>
-      <button onClick={connectWalletHandler}>{connButtonText}</button>
-      <div className='accountDisplay'>
-        <h3>User's Active Address: {defaultAccount}</h3>
-      </div>
-      <div className='balanceDisplay'>
-        <h3>User's Current Balance: {userBalance}</h3>
-      </div>
-      <br></br>
-      {errorMessage}
+    <div className="flex flex-col items-center justify-center min-h-screen bg-green-500">
+      <div className="max-w-lg px-4 py-8 bg-white rounded-lg shadow-lg">
+        <h2 className="text-2xl font-bold mb-2">Connect Ethereum Wallet</h2>
+        <h4 className="text-sm mb-4 w-full py-2 px-4 text-white bg-red-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+          This DApp is built on the Polygon Mumbai Network
+        </h4>
+        <button
+          className="w-full py-2 px-4 text-white bg-blue-500 hover:bg-blue-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          onClick={connectWalletHandler}
+        >
+          {connButtonText}
+        </button>
+        <div className="mt-4">
+          <h3 className="text-lg">User's Active Address:</h3>
+          <p className="text-gray-600">{defaultAccount}</p>
+        </div>
+        <div className="mt-2">
+          <h3 className="text-lg">User's Current Balance:</h3>
+          <p className="text-gray-600">{userBalance}</p>
+        </div>
+        {errorMessage && <p className="text-red-500 mt-4">{errorMessage}</p>}
       </div>
     </div>
   );
+  
 };
 
 export default App;
