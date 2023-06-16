@@ -1,14 +1,14 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import 'tailwindcss/tailwind.css';
-import { WalletContext } from '../contexts/WalletContext';
 import Link from 'next/link';
 import { connectWallet, getAccountBalance } from '../utils/wallet';
 
 const WalletCard = () => {
   const [errorMessage, setErrorMessage] = useState(null);
+  const [defaultAccount, setDefaultAccount] = useState("None");
   const [userBalance, setUserBalance] = useState(null);
   const [connButtonText, setConnButtonText] = useState('Click to Connect Wallet');
-  const { isWalletConnected, setIsWalletConnected, defaultAccount, setDefaultAccount } = useContext(WalletContext);
+  const [isWalletConnected, setIsWalletConnected] = useState(false);
 
   const connectWalletHandler = () => {
     connectWallet()
@@ -43,7 +43,6 @@ const WalletCard = () => {
       window.ethereum.on('chainChanged', chainChangedHandler);
     }
   }, []);
-
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-green-200">
