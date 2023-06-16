@@ -1,0 +1,11 @@
+.walletCard {
+	margin: 10rem;
+	border: 10px solid black;
+	border-radius: 5px;
+	background-color:#209CEE;
+	align-items: center;
+}
+
+.walletCardContent {
+	padding-left: 25%;
+}
