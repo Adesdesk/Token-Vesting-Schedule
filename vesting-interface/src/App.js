@@ -1,5 +1,5 @@
 import './App.css';
-import React, { useState, /*useEffect*/ } from 'react';
+import React, { useState } from 'react';
 import { ethers } from 'ethers';
 import './WalletCard.css';
 
@@ -8,16 +8,7 @@ const App = () => {
   const [defaultAccount, setDefaultAccount] = useState(null);
   const [userBalance, setUserBalance] = useState(null);
   const [connButtonText, setConnButtonText] = useState('Connect Wallet');
-  // const [currentTime, setCurrentTime] = useState(null);
-  // const [currentDate, setCurrentDate] = useState(null);
-/*
-  useEffect(() => {
-    if (defaultAccount) {
-      getCurrentTime();
-      getCurrentDate();
-    }
-  }, [defaultAccount]);
-*/
+  
   const connectWalletHandler = () => {
     if (window.ethereum && window.ethereum.isMetaMask) {
       console.log('MetaMask Here!');
@@ -55,43 +46,7 @@ const App = () => {
         setErrorMessage(error.message);
       });
   };
-/*
-  const getCurrentTime = () => {
-    const contractAddress = '0xd027a3362e00238fF91b344ed028FCcf43850900';
-    const contractABI = require('./ContractAbi.json');
 
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const contract = new ethers.Contract(contractAddress, contractABI, provider);
-
-    contract
-      .getCurrentTime()
-      .then(result => {
-        setCurrentTime(new Date(result * 1000).toLocaleTimeString());
-      })
-      .catch(error => {
-        setErrorMessage(error.message);
-      });
-  };
-
-  const getCurrentDate = () => {
-    const contractAddress = '0xd027a3362e00238fF91b344ed028FCcf43850900';
-    const contractABI = require('./ContractAbi.json');
-
-    const provider = new ethers.providers.Web3Provider(window.ethereum);
-    const contract = new ethers.Contract(contractAddress, contractABI, provider);
-
-    contract
-      .getCurrentDate()
-      .then(result => {
-        setCurrentDate(
-          new Date(result * 86400 * 1000).toLocaleDateString()
-        );
-      })
-      .catch(error => {
-        setErrorMessage(error.message);
-      });
-  };
-*/
   const chainChangedHandler = () => {
     // reload the page to avoid any errors with chain change mid-use of application
     window.location.reload();
@@ -115,15 +70,6 @@ const App = () => {
         <h3>User's Current Balance: {userBalance}</h3>
       </div>
       <br></br>
-      {/*}
-      <h2>My two Additional Functions</h2>
-      <div className='timeDisplay'>
-        <h3>Time Now is: {currentTime}</h3>
-      </div>
-      <div className='dateDisplay'>
-        <h3>Today's Date is: {currentDate}</h3>
-      </div>
-  <br></br>*/}
       {errorMessage}
       </div>
     </div>
