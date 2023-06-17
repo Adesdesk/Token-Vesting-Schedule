@@ -1,5 +1,6 @@
-import React, { useState, createContext } from 'react';
 import { ethers } from 'ethers';
+
+import React, { useState, createContext } from 'react';
 
 export const WalletContext = createContext();
 
@@ -33,7 +34,7 @@ export const WalletProvider = ({ children }) => {
 
   return (
     <WalletContext.Provider
-      value={{ defaultAccount, userBalance, accountChangedHandler }}
+  value={{ defaultAccount, userBalance, accountChangedHandler }}
     >
       {children}
     </WalletContext.Provider>

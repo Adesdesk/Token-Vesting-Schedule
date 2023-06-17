@@ -1,48 +1,48 @@
-import './App.css';
 import React, { useState } from 'react';
 import { ethers } from 'ethers';
-import './WalletCard.css';
+import { useNavigate } from 'react-router-dom';
+import './App.css';
 
 const App = () => {
   const [errorMessage, setErrorMessage] = useState(null);
   const [defaultAccount, setDefaultAccount] = useState(null);
   const [userBalance, setUserBalance] = useState(null);
   const [connButtonText, setConnButtonText] = useState('Connect Wallet');
-  
+
+  const navigate = useNavigate();
+
   const connectWalletHandler = () => {
     if (window.ethereum && window.ethereum.isMetaMask) {
       console.log('MetaMask Here!');
 
       window.ethereum
         .request({ method: 'eth_requestAccounts' })
-        .then(result => {
+        .then((result) => {
           accountChangedHandler(result[0]);
           setConnButtonText('Wallet Connected');
           getAccountBalance(result[0]);
         })
-        .catch(error => {
+        .catch((error) => {
           setErrorMessage(error.message);
         });
     } else {
       console.log('Need to install MetaMask');
-      setErrorMessage(
-        'Please install MetaMask browser extension to interact'
-      );
+      setErrorMessage('Please install MetaMask browser extension to interact');
     }
   };
 
-  const accountChangedHandler = newAccount => {
+  const accountChangedHandler = (newAccount) => {
     setDefaultAccount(newAccount);
     getAccountBalance(newAccount.toString());
   };
 
-  const getAccountBalance = account => {
+  const getAccountBalance = (account) => {
     window.ethereum
       .request({ method: 'eth_getBalance', params: [account, 'latest'] })
-      .then(balance => {
+      .then((balance) => {
         setUserBalance(ethers.utils.formatEther(balance));
       })
-      .catch(error => {
+      .catch((error) => {
         setErrorMessage(error.message);
       });
   };
@@ -56,6 +56,18 @@ const App = () => {
   window.ethereum.on('accountsChanged', accountChangedHandler);
 
   window.ethereum.on('chainChanged', chainChangedHandler);
+
+  const handleButton1Click = () => {
+    navigate('/register');
+  };
+
+  const handleButton2Click = () => {
+    navigate('/add-stakeholder');
+  };
+
+  const handleButton3Click = () => {
+    navigate('/withdraw');
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-green-500">
@@ -79,10 +91,23 @@ const App = () => {
           <p className="text-gray-600">{userBalance}</p>
         </div>
         {errorMessage && <p className="text-red-500 mt-4">{errorMessage}</p>}
+
+        {defaultAccount && (
+          <div className="fixed bottom-0 right-0 m-4 flex space-x-4">
+            <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded" onClick={handleButton1Click}>
+              Register Organization & Token
+            </button>
+            <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+              Add stakeholder & Vesting Schedule
+            </button>
+            <button className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">
+              Make withdrawal
+            </button>
+          </div>
+        )}
       </div>
     </div>
   );
-  
 };
 
 export default App;
