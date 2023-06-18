@@ -7,14 +7,12 @@ let vestingContract;
 
 // Check if Web3 is available
 if (typeof window.ethereum !== 'undefined') {
-  // Web3 provider from the injected Ethereum provider (e.g., Metamask)
-  const web3Provider = new Web3(window.ethereum);
 
   // set up provider
-  const provider = new ethers.providers.Web3Provider(web3Provider.currentProvider);
+  const provider = new ethers.providers.Web3Provider(window.ethereum);;
 
   // Address of the VestingContract.sol contract
-  const contractAddress = '0xfC50Ae26CF1EdEC244dDcD2186ba2A2D857CaAD3';
+  const contractAddress = '0xfBc818e0624B9fE957878329D3a98B4fd8AaFf3d';
 
   // Creating the VestingContract.sol contract instance
   vestingContract = new ethers.Contract(contractAddress, contractAbi, provider);

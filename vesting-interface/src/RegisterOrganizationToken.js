@@ -1,18 +1,17 @@
-import React, { useState, useContext } from 'react';
-import { WalletContext } from './WalletProvider';
-const customTokenContract = require('./utils/CustomTokenContract');
+import { useState } from 'react';
+// import { WalletContext } from './WalletProvider';
+import customTokenContract from './utils/CustomTokenContract';
 
 const RegisterOrganizationToken = () => {
-  const { defaultAccount } = useContext(WalletContext);
+  // const { defaultAccount } = useContext(WalletContext);
   const [customName, setCustomName] = useState('');
   const [customSymbol, setCustomSymbol] = useState('');
   const [totalSupply, setTotalSupply] = useState('');
 
-  const mintCustomToken = async () => {
+  const mintCustomToken = async (customName, customSymbol, totalSupply) => {
     try {
-      await customTokenContract.methods
-        .mintCustomToken(customName, customSymbol, totalSupply)
-        .send({ from: defaultAccount });
+      await customTokenContract // Use the imported instance correctly
+        .mintCustomToken(customName, customSymbol, totalSupply);
       // Custom token minted successfully
       console.log('Custom token minted successfully');
     } catch (error) {

@@ -13,7 +13,7 @@ const App = () => {
 
   const connectWalletHandler = () => {
     if (window.ethereum && window.ethereum.isMetaMask) {
-      console.log('MetaMask Here!');
+      console.log('MetaMask Wallet Deteceted!');
 
       window.ethereum
         .request({ method: 'eth_requestAccounts' })
