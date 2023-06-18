@@ -13,14 +13,14 @@ const RegisterOrganizationToken = ({ customTokenContract }) => {
       await customTokenContract.methods
         .mintCustomToken(customName, customSymbol, totalSupply)
         .send({ from: defaultAccount });
-      // Custom token minted successfully, perform any necessary actions
+      // Custom token minted successfully, or...
     } catch (error) {
-      // Handle error during token minting
+      // Handle possible errors during token minting
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-green-500">
       <div className="max-w-md px-4 py-8 bg-white shadow-lg rounded-lg">
         <h2 className="mb-4 text-2xl font-bold text-center">Register Organization Token</h2>
         <input

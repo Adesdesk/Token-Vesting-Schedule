@@ -2,6 +2,8 @@ import { ethers } from 'ethers';
 import Web3 from 'web3';
 import CustomTokenABI from './CustomToken.json';
 
+let customTokenContract;
+
 // Check if Web3 is available
 if (typeof window.ethereum !== 'undefined') {
   // Web3 provider from the injected Ethereum provider (e.g., Metamask)
@@ -17,11 +19,10 @@ if (typeof window.ethereum !== 'undefined') {
   const contractAddress = '0xCF23CcD7160CA7Bb2f72216a55b622C207933192';
 
   // Creating the CustomToken.sol contract instance
-  const customTokenContract = new ethers.Contract(contractAddress, contractAbi, provider);
-  
-  // Use the customTokenContract instance here
-  console.log(customTokenContract);
+  customTokenContract = new ethers.Contract(contractAddress, contractAbi, provider);
 } else {
   // Handle the case when Web3 is not available
   console.error('Web3 is not available');
 }
+
+export default customTokenContract;
