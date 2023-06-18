@@ -1,5 +1,6 @@
 import React, { useState, useContext } from 'react';
 import { WalletContext } from './WalletProvider';
+import customTokenContract from './utils/CustomTokenContract';
 
 const RegisterOrganizationToken = ({ customTokenContract }) => {
   const { defaultAccount } = useContext(WalletContext);
