@@ -1,4 +1,5 @@
 import React from 'react';
+import { ethers } from 'ethers';
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
@@ -8,6 +9,7 @@ import reportWebVitals from './reportWebVitals';
 import { WalletProvider } from './WalletProvider';
 
 const rootElement = document.getElementById('root');
+const provider = new ethers.providers.Web3Provider(window.ethereum);
 
 ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
