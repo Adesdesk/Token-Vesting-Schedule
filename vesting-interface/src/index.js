@@ -5,6 +5,7 @@ import './index.css';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import App from './App';
 import RegisterOrganizationToken from './RegisterOrganizationToken';
+import AddStakeholder from './AddStakeholder';
 import reportWebVitals from './reportWebVitals';
 import { WalletProvider } from './WalletProvider';
 
@@ -18,6 +19,7 @@ ReactDOM.createRoot(rootElement).render(
         <Routes>
           <Route path="/" element={<App />} />
           <Route path="/register" element={<RegisterOrganizationToken />} />
+          <Route path="/add-stakeholder" element={<AddStakeholder />} />
         </Routes>
       </WalletProvider>
     </Router>

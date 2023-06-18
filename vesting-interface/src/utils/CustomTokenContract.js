@@ -1,6 +1,7 @@
 import { ethers } from 'ethers';
 import Web3 from 'web3';
-import CustomTokenABI from './CustomToken.json';
+// ABI (Application Binary Interface) of the CustomToken.sol contract
+const contractAbi = require('./CustomToken.json');
 
 let customTokenContract;
 
@@ -10,10 +11,7 @@ if (typeof window.ethereum !== 'undefined') {
   const web3Provider = new Web3(window.ethereum);
 
   // set up provider
-  const provider = new ethers.providers.Web3Provider(web3Provider.currentProvider);
-
-  // ABI (Application Binary Interface) of the CustomToken.sol contract
-  const contractAbi = CustomTokenABI.abi;
+  const provider = new ethers.providers.Web3Provider(window.ethereum);
 
   // Address of the CustomToken.sol contract
   const contractAddress = '0xCF23CcD7160CA7Bb2f72216a55b622C207933192';
