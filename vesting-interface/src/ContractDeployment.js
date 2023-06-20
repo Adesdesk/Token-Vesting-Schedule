@@ -55,7 +55,7 @@ const ContractDeployment = ({ wallet }) => {
                     </div>
                 )}
                 {wallet && (
-                    <div className="flex flex-col items-center mt-4">
+                    <div className="mt-4">
                         <label className="block">
                             <span className="text-green-900">Token Name:</span>
                             <input
@@ -83,12 +83,14 @@ const ContractDeployment = ({ wallet }) => {
                                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                             />
                         </label>
+                        <div className="flex flex-col items-center">
                         <button
                             className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
                             onClick={deployContract}
                         >
                             Create Organization Token
                         </button>
+                        </div>
                     </div>
                 )}
                 {deploymentStatus && (
