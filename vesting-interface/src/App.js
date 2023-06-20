@@ -1,18 +1,13 @@
-import React, { useState } from 'react';
-import WalletConnection from './WalletConnection';
-import ContractDeployment from './ContractDeployment';
+import React from 'react';
+import VariousRoutes from './utils/VariousRoutes';
+import 'tailwindcss/tailwind.css';
+
 
 const App = () => {
-  const [wallet, setWallet] = useState(null);
-
-  const handleWalletConnect = () => {
-    setWallet(window.ethereum);
-  };
 
   return (
     <div>
-      <WalletConnection onConnect={handleWalletConnect} />
-      <ContractDeployment wallet={wallet} />
+      <VariousRoutes />
     </div>
   );
 };
