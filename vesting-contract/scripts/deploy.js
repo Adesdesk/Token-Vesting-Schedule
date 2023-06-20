@@ -25,14 +25,6 @@ async function deploy() {
   // Display CustomToken contract deployment details
   console.log("CustomToken deployed to:", customToken.address);
 
-  // Deploy VestingContract contract
-  // Set up the VestingContract contract factory
-  const VestingContract = await hre.ethers.getContractFactory("VestingContract");
-  const vestingContract = await VestingContract.deploy(customToken.address);
-  await vestingContract.deployed();
-  // Display VestingContract contract deployment details
-  console.log("VestingContract deployed to:", vestingContract.address);
-}
 
 // invoke the deploy() function
 deploy()
@@ -42,7 +34,4 @@ deploy()
     process.exit(1);
   });
 
-
-
-
-
+}

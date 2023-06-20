@@ -1,27 +1,33 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.7;
 
-import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
+contract CustomToken {
+    string private _name;
+    string private _symbol;
+    uint256 private _totalSupply;
 
-contract CustomToken is ERC20 {
-    string private _customName;
-    string private _customSymbol;
+    mapping(address => uint256) private _balances;
 
-    constructor() ERC20("CompanyToken", "CTK") {
-        _mint(msg.sender, 1000000000000000000000000); // Initial supply: 1,000,000 tokens with 18 decimal places
+    constructor(string memory name_, string memory symbol_, uint256 totalSupply_) {
+        _name = name_;
+        _symbol = symbol_;
+        _totalSupply = totalSupply_;
+        _balances[msg.sender] = totalSupply_;
     }
 
-    function mintCustomToken(string memory customName, string memory customSymbol, uint256 totalSupply) external {
-        _mint(msg.sender, totalSupply);
-        _customName = customName;
-        _customSymbol = customSymbol;
+    function name() public view returns (string memory) {
+        return _name;
     }
 
-    function name() public view override returns (string memory) {
-        return _customName;
+    function symbol() public view returns (string memory) {
+        return _symbol;
     }
 
-    function symbol() public view override returns (string memory) {
-        return _customSymbol;
+    function totalSupply() public view returns (uint256) {
+        return _totalSupply;
+    }
+
+    function balanceOf(address account) public view returns (uint256) {
+        return _balances[account];
     }
 }
