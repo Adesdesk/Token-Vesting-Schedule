@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import CustomTokenContract from './contracts/CustomToken.json';
 
-const ContractDeployment = ({ wallet }) => {
+const RegisterOrganizationToken = ({ wallet }) => {
     const [tokenName, setTokenName] = useState('');
     const [tokenSymbol, setTokenSymbol] = useState('');
     const [totalSupply, setTotalSupply] = useState('');
@@ -103,4 +103,4 @@ const ContractDeployment = ({ wallet }) => {
     );
 };
 
-export default ContractDeployment;
+export default RegisterOrganizationToken;

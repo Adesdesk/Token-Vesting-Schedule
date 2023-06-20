@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import WalletConnection from '../WalletConnection';
-import ContractDeployment from '../ContractDeployment';
+import RegisterOrganizationToken from '../RegisterOrganizationToken';
 
 const VariousRoutes = () => {
   const [wallet, setWallet] = useState(null);
@@ -19,7 +19,7 @@ const VariousRoutes = () => {
           path="/"
           element={<WalletConnection onConnect={handleWalletConnect} />}
         />
-        <Route exact path="/contract-deployment" element={<ContractDeployment wallet={wallet} />} />
+        <Route exact path="/register-organization-token" element={<RegisterOrganizationToken wallet={wallet} />} />
       </Routes>
     </Router>
   );
