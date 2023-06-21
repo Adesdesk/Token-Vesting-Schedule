@@ -1,21 +1,16 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.7;
 
-// Interface for a custom token contract
-interface CustomTokenInterface {
-    function balanceOf(address account) external view returns (uint256);
-    function transfer(address recipient, uint256 amount) external returns (bool);
-}
+import './CustomToken.sol';
 
-// Contract for token vesting
 contract TokenVesting {
     address private _admin; // Address of the admin
-    CustomTokenInterface private _tokenContract; // Instance of the custom token contract
+    CustomToken private _tokenContract; // An instance of the CustomToken contract
 
-    // Enum defining different stakeholder categories
+    // An enum defining different stakeholder categories
     enum StakeholderCategory {Community, Validators, Investors}
 
-    // Struct defining a vesting schedule
+    // A struct providing framework for creating vesting schedules
     struct VestingSchedule {
         uint256 totalTokens; // Total tokens allocated for the schedule
         uint256 releaseStart; // Start timestamp of the release period
@@ -30,18 +25,18 @@ contract TokenVesting {
     // Constructor function
     constructor(address tokenContractAddress) {
         _admin = msg.sender;
-        _tokenContract = CustomTokenInterface(tokenContractAddress);
+        _tokenContract = CustomToken(tokenContractAddress);
     }
 
-    // Modifier to allow only the admin to call a function
+    // Modifier to allow only the admin to call restricted function(s)
     modifier onlyAdmin() {
-        require(msg.sender == _admin, "Only the admin can call this function");
+        require(msg.sender == _admin, "Only the admin can perform this transaction");
         _;
     }
 
-    // Modifier to allow only whitelisted addresses to call a function
+    // Modifier to allow only whitelisted addresses to perform specific transaction(s)
     modifier onlyWhitelisted() {
-        require(_whitelist[msg.sender], "Only whitelisted addresses can call this function");
+        require(_whitelist[msg.sender], "Only whitelisted addresses can perform this transaction");
         _;
     }
 
@@ -52,15 +47,15 @@ contract TokenVesting {
         }
     }
 
-    // Function to create a vesting schedule for a stakeholder category, can only be called by the admin
+    // Function to create a vesting schedule for any stakeholder category. (Can only be called by the admin)
     function createVestingSchedule(
         StakeholderCategory category,
         uint256 totalTokens,
         uint256 releaseStart,
         uint256 releaseEnd
     ) external onlyAdmin {
-        require(totalTokens > 0, "Total tokens must be greater than zero");
-        require(releaseStart < releaseEnd, "Invalid release periods");
+        require(totalTokens > 0, "Tokens must be greater than zero");
+        require(releaseStart < releaseEnd, "Release period must be in the future");
 
         _vestingSchedules[category] = VestingSchedule({
             totalTokens: totalTokens,
@@ -70,19 +65,19 @@ contract TokenVesting {
         });
     }
 
-    // Function to set the stakeholder category for an address, can only be called by the admin
+    // Function to set the stakeholder category for an address. (Can only be called by the admin)
     function setCategorizedAddress(address beneficiary, StakeholderCategory category) external onlyAdmin {
         require(beneficiary != address(0), "Invalid beneficiary address");
         _stakeholderCategories[beneficiary] = category;
     }
 
-    // Function to release tokens for the caller, can only be called by whitelisted addresses
+    // Function to release tokens for the caller. (Can only be called by whitelisted addresses)
     function releaseTokens() external onlyWhitelisted {
         StakeholderCategory category = _stakeholderCategories[msg.sender];
-        require(category != StakeholderCategory(0), "No stakeholder category found for the caller");
+        require(category != StakeholderCategory(0), "No stakeholder category found for this caller");
 
         VestingSchedule storage schedule = _vestingSchedules[category];
-        require(schedule.totalTokens > 0, "No vesting schedule found for the caller");
+        require(schedule.totalTokens > 0, "No vesting schedule found for this caller");
 
         uint256 tokensToRelease = calculateTokensToRelease(schedule);
         require(tokensToRelease > 0, "No tokens available for release");
@@ -91,7 +86,7 @@ contract TokenVesting {
         _tokenContract.transfer(msg.sender, tokensToRelease);
     }
 
-    // Function to calculate the number of tokens to release based on the vesting schedule
+    // Function to calculate the number of tokens to release based on set vesting schedule
     function calculateTokensToRelease(VestingSchedule memory schedule) private view returns (uint256) {
         uint256 currentTimestamp = block.timestamp;
         if (currentTimestamp < schedule.releaseStart) {

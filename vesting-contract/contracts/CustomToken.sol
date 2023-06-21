@@ -30,4 +30,13 @@ contract CustomToken {
     function balanceOf(address account) public view returns (uint256) {
         return _balances[account];
     }
+
+    function transfer(address recipient, uint256 amount) public returns (bool) {
+        require(_balances[msg.sender] >= amount, "Insufficient balance");
+
+        _balances[msg.sender] -= amount;
+        _balances[recipient] += amount;
+
+        return true;
+    }
 }

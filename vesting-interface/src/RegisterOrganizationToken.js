@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import CustomTokenContract from './contracts/CustomToken.json';
+import TokenVestingContract from './contracts/TokenVesting.json';
+
 
 const RegisterOrganizationToken = ({ wallet }) => {
     const [tokenName, setTokenName] = useState('');
@@ -8,6 +10,9 @@ const RegisterOrganizationToken = ({ wallet }) => {
     const [totalSupply, setTotalSupply] = useState('');
     const [walletConnectionStatus, setWalletConnectionStatus] = useState('');
     const [deploymentStatus, setDeploymentStatus] = useState('');
+    const [tokenVestingAddress, setTokenVestingAddress] = useState('');
+    const [customTokenAddress, setCustomTokenAddress] = useState('');
+
 
     useEffect(() => {
         setWalletConnectionStatus(wallet ? 'Wallet connection active. Kindly proceed with Transactions' : 'Wallet connection inactive. Please reconnect');
@@ -22,18 +27,32 @@ const RegisterOrganizationToken = ({ wallet }) => {
         const signer = provider.getSigner();
 
         try {
-            const factory = new ethers.ContractFactory(
+            const tokenFactory = new ethers.ContractFactory(
                 CustomTokenContract.abi,
                 CustomTokenContract.bytecode,
                 signer
             );
 
-            const contract = await factory.deploy(tokenName, tokenSymbol, totalSupply);
+            const tokenContract = await tokenFactory.deploy(tokenName, tokenSymbol, totalSupply);
             setDeploymentStatus('Contract deployment in progress...');
-            await contract.deployTransaction.wait();
-            setDeploymentStatus('Organization Token successfully created. \n Organization Token address:', contract.address);
-            console.log('Organization Token address is:', contract.address);
-            console.log('Organization Token creation transaction receipt:', contract.deployTransaction);
+            await tokenContract.deployTransaction.wait();
+            setDeploymentStatus('Organization Token successfully created');
+            setCustomTokenAddress(tokenContract.address);
+            console.log('Organization Token address is:', tokenContract.address);
+            console.log('Organization Token creation transaction receipt:', tokenContract.deployTransaction);
+
+            const vestingFactory = new ethers.ContractFactory(
+                TokenVestingContract.abi,
+                TokenVestingContract.bytecode,
+                signer
+            );
+            const vestingContract = await vestingFactory.deploy(tokenContract.address);
+            setDeploymentStatus('TokenVesting contract deployment in progress...');
+            await vestingContract.deployTransaction.wait();
+            setDeploymentStatus('Your organization\'s token vesting plan has been successfully created.');
+            setTokenVestingAddress(vestingContract.address);
+            console.log('TokenVesting address is:', vestingContract.address);
+            console.log('TokenVesting creation transaction receipt:', vestingContract.deployTransaction);
         } catch (error) {
             setDeploymentStatus(`Error creating Organization Token: ${error.message}`);
             console.log('Error creating Organization Token:', error);
@@ -57,7 +76,7 @@ const RegisterOrganizationToken = ({ wallet }) => {
                 {wallet && (
                     <div className="mt-4">
                         <label className="block">
-                            <span className="text-green-900">Token Name:</span>
+                            <span className="text-blue-600">Input Token Name:</span>
                             <input
                                 type="text"
                                 value={tokenName}
@@ -66,7 +85,7 @@ const RegisterOrganizationToken = ({ wallet }) => {
                             />
                         </label>
                         <label className="block mt-2">
-                            <span className="text-green-900">Token Symbol:</span>
+                            <span className="text-blue-600">Input Token Symbol:</span>
                             <input
                                 type="text"
                                 value={tokenSymbol}
@@ -75,7 +94,7 @@ const RegisterOrganizationToken = ({ wallet }) => {
                             />
                         </label>
                         <label className="block mt-2">
-                            <span className="text-green-900">Total Supply:</span>
+                            <span className="text-blue-600">Input Total Supply:</span>
                             <input
                                 type="text"
                                 value={totalSupply}
@@ -84,20 +103,29 @@ const RegisterOrganizationToken = ({ wallet }) => {
                             />
                         </label>
                         <div className="flex flex-col items-center">
-                        <button
-                            className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
-                            onClick={deployContract}
-                        >
-                            Create Organization Token
-                        </button>
+                            <button
+                                className="mt-4 bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded"
+                                onClick={deployContract}
+                            >
+                                Create Organization Token
+                            </button>
                         </div>
                     </div>
                 )}
                 {deploymentStatus && (
-                    <div className="mt-4">
+                    <div className="mt-4 text-red-900 text-center">
                         <p>{deploymentStatus}</p>
+                        <p>Your organization Token address: {customTokenAddress}</p>
                     </div>
                 )}
+            </div>
+            <div>
+                {tokenVestingAddress && (
+                    <div className="mt-4 text-white text-center">
+                        <p>Your organization's token vesting contract address: {tokenVestingAddress}</p>
+                    </div>
+                )}
+
             </div>
         </div>
     );

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
-import VestingContract from './contracts/VestingContract.json';
+import TokenVesting from './contracts/TokenVesting.json';
+import CustomTokenContract from './contracts/CustomToken.json';
 
 const VestingSchedules = ({ wallet }) => {
     const [tokenName, setTokenName] = useState('');
