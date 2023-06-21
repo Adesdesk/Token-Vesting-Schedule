@@ -9,6 +9,7 @@
 
 // Import Hardhat environment and Ethereum libraries
 const hre = require("hardhat");
+import { ethers } from "hardhat";
 
 
 async function deploy() {
@@ -18,10 +19,12 @@ async function deploy() {
   // Indicate a grab of CustomToken.sol
   console.log("Deploying the CustomToken contract with the account:", deployer.address);
   // Deploy CustomToken contract
-  // Set up the CustomToken contract factory
+  /*/ Set up the CustomToken contract factory
   const CustomToken = await hre.ethers.getContractFactory("CustomToken");
   const customToken = await CustomToken.deploy();
-  await customToken.deployed();
+  await customToken.deployed();*/
+  const customToken = await ethers.deployContract("CustomToken");
+  await customToken.waitForDeployment();
   // Display CustomToken contract deployment details
   console.log("CustomToken deployed to:", customToken.address);
 
