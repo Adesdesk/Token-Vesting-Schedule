@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import CustomTokenContract from './contracts/CustomToken.json';
 import TokenVestingContract from './contracts/TokenVesting.json';
+import { useNavigate } from 'react-router-dom';
 
 
 const RegisterOrganizationToken = ({ wallet }) => {
@@ -12,6 +13,7 @@ const RegisterOrganizationToken = ({ wallet }) => {
     const [deploymentStatus, setDeploymentStatus] = useState('');
     const [tokenVestingAddress, setTokenVestingAddress] = useState('');
     const [customTokenAddress, setCustomTokenAddress] = useState('');
+    const navigate = useNavigate();
 
 
     useEffect(() => {
@@ -40,7 +42,6 @@ const RegisterOrganizationToken = ({ wallet }) => {
             setCustomTokenAddress(tokenContract.address);
             console.log('Organization Token address is:', tokenContract.address);
             console.log('Organization Token creation transaction receipt:', tokenContract.deployTransaction);
-
             const vestingFactory = new ethers.ContractFactory(
                 TokenVestingContract.abi,
                 TokenVestingContract.bytecode,
@@ -57,6 +58,10 @@ const RegisterOrganizationToken = ({ wallet }) => {
             setDeploymentStatus(`Error creating Organization Token: ${error.message}`);
             console.log('Error creating Organization Token:', error);
         }
+    };
+
+    const handleNavigateToTokenVesting = () => {
+        navigate('/add-stakeholder-and-vesting');
     };
 
     return (
@@ -121,11 +126,19 @@ const RegisterOrganizationToken = ({ wallet }) => {
             </div>
             <div>
                 {tokenVestingAddress && (
-                    <div className="mt-4 text-white text-center">
-                        <p>Your organization's token vesting contract address: {tokenVestingAddress}</p>
-                    </div>
-                )}
+                    <>
+                        <div className="mt-4 text-white text-center">
+                            <p>Your organization's token vesting contract address: {tokenVestingAddress}</p>
+                        </div>
 
+                        <button
+                            className="bg-blue-700 hover:bg-blue-600 text-white item-center font-bold py-2 px-4 rounded mt-4"
+                            onClick={handleNavigateToTokenVesting}
+                        >
+                            Ready! Click here to add stakeholders and vesting plans </button>
+                    </>
+
+                )}
             </div>
         </div>
     );

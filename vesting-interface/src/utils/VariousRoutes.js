@@ -3,6 +3,8 @@ import { Route, Routes } from 'react-router-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import WalletConnection from '../WalletConnection';
 import RegisterOrganizationToken from '../RegisterOrganizationToken';
+import AddStakeholderAndSchedules from '../AddStakeholderAndSchedules';
+
 
 const VariousRoutes = () => {
   const [wallet, setWallet] = useState(null);
@@ -16,10 +18,9 @@ const VariousRoutes = () => {
       <Routes>
         <Route
           exact
-          path="/"
-          element={<WalletConnection onConnect={handleWalletConnect} />}
-        />
+          path="/" element={<WalletConnection onConnect={handleWalletConnect} />}/>
         <Route exact path="/register-organization-token" element={<RegisterOrganizationToken wallet={wallet} />} />
+        <Route exact path="/add-stakeholder-and-vesting" element={<AddStakeholderAndSchedules wallet={wallet} />} />
       </Routes>
     </Router>
   );
