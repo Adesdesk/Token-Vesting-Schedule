@@ -22,6 +22,13 @@ const WalletConnection = ({ onConnect }) => {
     const handleNavigateToContractDeployment = () => {
         navigate('/register-organization-token');
     };
+    const handleNavigateToTokenVesting = () => {
+        navigate('/add-stakeholder-and-vesting'); 
+     };
+
+    const handleNavigateToWithdrawals = () => {
+        navigate('/make-withdrawal'); 
+     };
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen bg-green-900">
@@ -41,11 +48,28 @@ const WalletConnection = ({ onConnect }) => {
 
                 )}
                 {walletConnected && (
+                    <div className='flex flex-col items-center justify-center'>
                     <button
                         className="bg-blue-700 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded mt-4"
                         onClick={handleNavigateToContractDeployment}
                     >
-                        Connected! Proceed to Register an Organization </button>
+                        Connected! Click here to Register an Organization </button>
+                    <br></br>
+
+                    <button
+                    className="bg-red-700 hover:bg-red-600 text-white font-bold py-2 px-4 rounded mt-4"
+                    onClick={handleNavigateToTokenVesting}
+                    >
+                    Already Registered? Get your contract address and click here to continue.
+                    </button>
+
+                    <button
+                    className="bg-yellow-700 hover:bg-yellow-600 text-white font-bold py-2 px-4 rounded mt-10"
+                    onClick={handleNavigateToWithdrawals}
+                    >
+                    Not an admin and got tokens to claim? Click here to make withdrawals.
+                    </button>
+                    </div>
                 )}
             </div>
         </div>

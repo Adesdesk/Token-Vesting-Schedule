@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
-import TokenVestingContract from './contracts/TokenVesting.json';
+import TokenVestingContract from '../contracts/TokenVesting.json';
 
 const AddStakeholderAndSchedules = ({ wallet }) => {
   const [contract, setContract] = useState(null);
@@ -9,6 +9,8 @@ const AddStakeholderAndSchedules = ({ wallet }) => {
   const [totalTokens, setTotalTokens] = useState('');
   const [releaseStart, setReleaseStart] = useState('');
   const [releaseEnd, setReleaseEnd] = useState('');
+  const [whitelistedAddresses, setWhitelistedAddresses] = useState([]);
+  const [addressToAdd, setAddressToAdd] = useState('');
 
   useEffect(() => {
     // Initialize the contract instance
@@ -27,20 +29,46 @@ const AddStakeholderAndSchedules = ({ wallet }) => {
       initContract();
     }
   }, [contractAddress]);
-
-  const handleCreateSchedule = async () => {
+  const handleButtonClick = async () => {
     try {
-      const parsedTokens = ethers.utils.parseUnits(totalTokens.toString(), 0);
-      const parsedStart = Math.floor(new Date(releaseStart).getTime() / 1000); // Converting releaseStart to timestamp
-      const parsedEnd = Math.floor(new Date(releaseEnd).getTime() / 1000); // Converting releaseEnd to timestamp
-
-      const tx = await contract.createVestingSchedule(category, parsedTokens, parsedStart, parsedEnd);
-      await tx.wait();
-      console.log('Vesting schedule created successfully!');
+      if (contract) {
+        // Call createVestingSchedule function
+        const parsedTokens = ethers.utils.parseUnits(totalTokens.toString(), 0);
+        const parsedStart = Math.floor(new Date(releaseStart).getTime() / 1000);
+        const parsedEnd = Math.floor(new Date(releaseEnd).getTime() / 1000);
+  
+        const createScheduleTx = await contract.createVestingSchedule(
+          category,
+          parsedTokens,
+          parsedStart,
+          parsedEnd
+        );
+        await createScheduleTx.wait();
+        console.log('Vesting schedule created successfully!');
+  
+        // Call whitelistAddresses and setCategorizedAddress functions
+        const whitelistTx = await contract.whitelistAddresses([addressToAdd]);
+        const categorizedTx = await contract.setCategorizedAddress(addressToAdd, category);
+        await whitelistTx.wait();
+        await categorizedTx.wait();
+        console.log('Address whitelisted successfully!');
+        console.log('Address whitelisted and categorized successfully!');
+  
+        // Update whitelisted addresses
+        const updatedWhitelistedAddresses = await contract.getWhitelistedAddresses();
+        setWhitelistedAddresses(updatedWhitelistedAddresses);
+  
+        // Reset input fields
+        setAddressToAdd('');
+        setCategory('');
+        setTotalTokens('');
+        setReleaseStart('');
+        setReleaseEnd('');
+      }
     } catch (error) {
-      console.error('Error creating vesting schedule:', error);
+      console.error('Error handling button click:', error);
     }
-  };
+  };      
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-green-900">
@@ -49,7 +77,6 @@ const AddStakeholderAndSchedules = ({ wallet }) => {
           Add Stakeholder and Create Vesting Schedule
         </h2>
         <div className="flex flex-col items-center">
-        
           <label htmlFor="contractAddress" className="block mt-2 text-sm text-blue-600">
             Contract Address:  
           </label>
@@ -75,12 +102,12 @@ const AddStakeholderAndSchedules = ({ wallet }) => {
           /> <br></br>
         
           <label htmlFor="totalTokens" className="block mt-2 text-sm text-blue-600">
-            Total Tokens:
+            Amount of Tokens:
           </label>
           <input
             type="number"
             id="totalTokens"
-            placeholder="Amount of tokens to release over time"
+            placeholder="Amount of tokens to release over specific time"
             className="block w-full border rounded-md px-2 py-1 mt-1 rounded-md rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
             value={totalTokens}
             onChange={(e) => setTotalTokens(e.target.value)}
@@ -109,13 +136,26 @@ const AddStakeholderAndSchedules = ({ wallet }) => {
             value={releaseEnd}
             onChange={(e) => setReleaseEnd(e.target.value)}
           /><br></br>
-        
-        <button
-          className="bg-green-900 hover:bg-green-800 text-white font-medium px-4 py-2 rounded-md"
-          onClick={handleCreateSchedule}
-        >
-          Create Vesting Schedule
-        </button>
+
+          {/* <div className="mt-4"> */}
+            <label htmlFor="addressToAdd" className="block mt-2 text-sm text-blue-600">
+              Address to Add to Whitelist:
+            </label>
+            <input
+              type="text"
+              id="addressToAdd"
+              placeholder="Enter address to whitelist"
+              className="block w-full border rounded-md px-2 py-1 mt-1 rounded-md rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              value={addressToAdd}
+              onChange={(e) => setAddressToAdd(e.target.value)}
+            />
+            <button
+              className="bg-green-900 hover:bg-green-800 text-white font-medium px-4 py-2 rounded-md mt-2"
+              onClick={handleButtonClick}
+            >
+              Whitelist & Add Stakeholder's Vesting Plan
+            </button>
+          {/* </div> */}
         </div>
       </div>
     </div>

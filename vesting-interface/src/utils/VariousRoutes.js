@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
 import { Route, Routes } from 'react-router-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
-import WalletConnection from '../WalletConnection';
-import RegisterOrganizationToken from '../RegisterOrganizationToken';
-import AddStakeholderAndSchedules from '../AddStakeholderAndSchedules';
-import TestContract from '../TestContract';
-
+import WalletConnection from '../AppPages/WalletConnection';
+import RegisterOrganizationToken from '../AppPages/RegisterOrganizationToken';
+import AddStakeholderAndSchedules from '../AppPages/AddStakeholderAndSchedules';
+import WithdrawTokens from '../AppPages/WithdrawTokens';
 
 const VariousRoutes = () => {
   const [wallet, setWallet] = useState(null);
@@ -22,7 +21,7 @@ const VariousRoutes = () => {
           path="/" element={<WalletConnection onConnect={handleWalletConnect} />}/>
         <Route exact path="/register-organization-token" element={<RegisterOrganizationToken wallet={wallet} />} />
         <Route exact path="/add-stakeholder-and-vesting" element={<AddStakeholderAndSchedules wallet={wallet} />} />
-        <Route exact path="/test-token" element={<TestContract wallet={wallet} />} />
+        <Route exact path="/make-withdrawal" element={<WithdrawTokens wallet={wallet} />} />
       </Routes>
     </Router>
   );
