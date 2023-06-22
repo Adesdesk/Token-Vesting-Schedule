@@ -5,8 +5,7 @@ import TokenVestingContract from '../contracts/TokenVesting.json';
 const WithdrawTokens = ({ wallet }) => {
   const [contract, setContract] = useState(null);
   const [contractAddress, setContractAddress] = useState('');
-  const [whitelistedAddresses, setWhitelistedAddresses] = useState([]);
-  const [selectedAddress, setSelectedAddress] = useState('');
+  const [error, setError] = useState('');
 
   useEffect(() => {
     // Initialize the contract instance
@@ -30,22 +29,19 @@ const WithdrawTokens = ({ wallet }) => {
     }
   }, [contractAddress]);
 
-  const handleGetWhitelistedAddresses = async () => {
-    try {
-      const addresses = await contract.getWhitelistedAddresses();
-      setWhitelistedAddresses(addresses);
-    } catch (error) {
-      console.error('Error getting whitelisted addresses:', error);
-    }
-  };
-
   const handleWithdrawTokens = async () => {
     try {
+      if (!contractAddress) {
+        setError('Contract address is required');
+        return;
+      }
+
       const tx = await contract.releaseTokens();
       await tx.wait();
       console.log('Tokens withdrawn successfully!');
     } catch (error) {
       console.error('Error withdrawing tokens:', error);
+      setError('Only whitelisted addresses can perform this transaction');
     }
   };
 
@@ -56,51 +52,28 @@ const WithdrawTokens = ({ wallet }) => {
           Withdraw Tokens
         </h2>
         <div className="flex flex-col items-center">
+          {error && (
+            <div className="text-red-500 text-sm mb-2">{error}</div>
+          )}
+
           <label htmlFor="contractAddress" className="block mt-2 text-sm text-blue-600">
-            Contract Address:  
+            Contract Address:
           </label>
           <input
             type="text"
             id="contractAddress"
-            placeholder="Paste the TokenVesting contract address"
-            className="block w-full border rounded-md px-2 py-1 mt-1 rounded-md rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            placeholder="Enter the TokenVesting contract address"
+            className="block w-full border rounded-md px-2 py-1 mt-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
             value={contractAddress}
             onChange={(e) => setContractAddress(e.target.value)}
           />
+
           <button
             className="bg-green-900 hover:bg-green-800 text-white font-medium px-4 py-2 rounded-md mt-2"
-            onClick={handleGetWhitelistedAddresses}
+            onClick={handleWithdrawTokens}
           >
-            Get Whitelisted Addresses
+            Withdraw Tokens
           </button>
-
-          {whitelistedAddresses.length > 0 && (
-            <>
-              <label htmlFor="selectedAddress" className="block mt-4 text-sm text-blue-600">
-                Select Address:
-              </label>
-              <select
-                id="selectedAddress"
-                className="block w-full border rounded-md px-2 py-1 mt-1 rounded-md rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-                value={selectedAddress}
-                onChange={(e) => setSelectedAddress(e.target.value)}
-              >
-                <option value="">-- Select an address --</option>
-                {whitelistedAddresses.map((address) => (
-                  <option key={address} value={address}>
-                    {address}
-                  </option>
-                ))}
-              </select>
-              <button
-                className="bg-green-900 hover:bg-green-800 text-white font-medium px-4 py-2 rounded-md mt-2"
-                disabled={!selectedAddress}
-                onClick={handleWithdrawTokens}
-              >
-                Withdraw Tokens
-              </button>
-            </>
-          )}
         </div>
       </div>
     </div>

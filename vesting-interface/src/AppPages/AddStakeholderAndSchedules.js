@@ -9,7 +9,7 @@ const AddStakeholderAndSchedules = ({ wallet }) => {
   const [totalTokens, setTotalTokens] = useState('');
   const [releaseStart, setReleaseStart] = useState('');
   const [releaseEnd, setReleaseEnd] = useState('');
-  const [whitelistedAddresses, setWhitelistedAddresses] = useState([]);
+  // const [whitelistedAddresses, setWhitelistedAddresses] = useState([]);
   const [addressToAdd, setAddressToAdd] = useState('');
 
   useEffect(() => {
@@ -47,16 +47,16 @@ const AddStakeholderAndSchedules = ({ wallet }) => {
         console.log('Vesting schedule created successfully!');
   
         // Call whitelistAddresses and setCategorizedAddress functions
-        const whitelistTx = await contract.whitelistAddresses([addressToAdd]);
+        //const whitelistTx = await contract.whitelistAddresses([addressToAdd]);
         const categorizedTx = await contract.setCategorizedAddress(addressToAdd, category);
-        await whitelistTx.wait();
+        // await whitelistTx.wait();
         await categorizedTx.wait();
-        console.log('Address whitelisted successfully!');
-        console.log('Address whitelisted and categorized successfully!');
+        //console.log('Address whitelisted successfully!');
+        console.log('Stakeholder address categorized successfully!');
   
-        // Update whitelisted addresses
-        const updatedWhitelistedAddresses = await contract.getWhitelistedAddresses();
-        setWhitelistedAddresses(updatedWhitelistedAddresses);
+        // // Update whitelisted addresses
+        // const updatedWhitelistedAddresses = await contract.getWhitelistedAddresses();
+        // setWhitelistedAddresses(updatedWhitelistedAddresses);
   
         // Reset input fields
         setAddressToAdd('');
@@ -77,13 +77,13 @@ const AddStakeholderAndSchedules = ({ wallet }) => {
           Add Stakeholder and Create Vesting Schedule
         </h2>
         <div className="flex flex-col items-center">
-          <label htmlFor="contractAddress" className="block mt-2 text-sm text-blue-600">
-            Contract Address:  
+          <label htmlFor="contractAddress" className="block mt-2 text-sm text-red-600">
+            Your Organization's Token Vesting Contract Address:  
           </label>
           <input
             type="text"
             id="contractAddress"
-            placeholder="Paste your token vesting plan contract address"
+            placeholder="Paste your organization's custom token vesting contract address"
             className="block w-full border rounded-md px-2 py-1 mt-1 rounded-md rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
             value={contractAddress}
             onChange={(e) => setContractAddress(e.target.value)}
@@ -102,7 +102,7 @@ const AddStakeholderAndSchedules = ({ wallet }) => {
           /> <br></br>
         
           <label htmlFor="totalTokens" className="block mt-2 text-sm text-blue-600">
-            Amount of Tokens:
+            Amount of Tokens t release:
           </label>
           <input
             type="number"
@@ -114,24 +114,22 @@ const AddStakeholderAndSchedules = ({ wallet }) => {
           /> <br></br>
         
           <label htmlFor="releaseStart" className="block mt-2 text-sm text-blue-600">
-            Release Start:
+          Token Release Start Date:
           </label>
           <input
             type="date"
             id="releaseStart"
-            placeholder="Select start date"
             className="block w-full border rounded-md px-2 py-1 mt-1 rounded-md rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
             value={releaseStart}
             onChange={(e) => setReleaseStart(e.target.value)}
           /><br></br>
         
           <label htmlFor="releaseEnd" className="block mt-2 text-sm text-blue-600">
-            Release End: 
+          Token Release End Date: 
           </label>
           <input
             type="date"
             id="releaseEnd"
-            placeholder="Select end date"
             className="mt-1 block w-full border rounded-md px-2 py-1 mt-1 rounded-md rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
             value={releaseEnd}
             onChange={(e) => setReleaseEnd(e.target.value)}
@@ -139,12 +137,12 @@ const AddStakeholderAndSchedules = ({ wallet }) => {
 
           {/* <div className="mt-4"> */}
             <label htmlFor="addressToAdd" className="block mt-2 text-sm text-blue-600">
-              Address to Add to Whitelist:
+              Address to add to defined category:
             </label>
             <input
               type="text"
               id="addressToAdd"
-              placeholder="Enter address to whitelist"
+              placeholder="Address to categorize as Community, Validators, or Investors (0, 1, or 2 respectively)"
               className="block w-full border rounded-md px-2 py-1 mt-1 rounded-md rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               value={addressToAdd}
               onChange={(e) => setAddressToAdd(e.target.value)}
