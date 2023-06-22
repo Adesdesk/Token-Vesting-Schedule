@@ -4,6 +4,7 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import WalletConnection from '../WalletConnection';
 import RegisterOrganizationToken from '../RegisterOrganizationToken';
 import AddStakeholderAndSchedules from '../AddStakeholderAndSchedules';
+import TestContract from '../TestContract';
 
 
 const VariousRoutes = () => {
@@ -21,6 +22,7 @@ const VariousRoutes = () => {
           path="/" element={<WalletConnection onConnect={handleWalletConnect} />}/>
         <Route exact path="/register-organization-token" element={<RegisterOrganizationToken wallet={wallet} />} />
         <Route exact path="/add-stakeholder-and-vesting" element={<AddStakeholderAndSchedules wallet={wallet} />} />
+        <Route exact path="/test-token" element={<TestContract wallet={wallet} />} />
       </Routes>
     </Router>
   );

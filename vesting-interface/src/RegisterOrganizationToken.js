@@ -50,7 +50,7 @@ const RegisterOrganizationToken = ({ wallet }) => {
             const vestingContract = await vestingFactory.deploy(tokenContract.address);
             setDeploymentStatus('TokenVesting contract deployment in progress...');
             await vestingContract.deployTransaction.wait();
-            setDeploymentStatus('Your organization\'s token vesting plan has been successfully created.');
+            setDeploymentStatus('Your organization\'s token vesting plan has been successfully created. \n Please keep its contract address for future use');
             setTokenVestingAddress(vestingContract.address);
             console.log('TokenVesting address is:', vestingContract.address);
             console.log('TokenVesting creation transaction receipt:', vestingContract.deployTransaction);
@@ -61,17 +61,27 @@ const RegisterOrganizationToken = ({ wallet }) => {
     };
 
     const handleNavigateToTokenVesting = () => {
-        navigate('/add-stakeholder-and-vesting');
+       navigate('/add-stakeholder-and-vesting'); 
     };
 
     return (
+        <div>
+            <div className="flex flex-col items-left">
+                <button
+                className="bg-green-900 text-end text-white font-medium px-4 py-2"
+                onClick={handleNavigateToTokenVesting}
+                >
+                Already Registered? Get your contract address and click here to continue.
+                </button>
+            </div>
         <div className="flex flex-col items-center justify-center min-h-screen bg-green-900">
+            
             <div className="max-w-lg px-4 py-2 bg-white rounded-lg shadow-lg">
                 <h2 className="text-2xl text-center font-bold mb-2">
                     Register Your Organization By Creating Its Custom Token In Admin Capacity
                 </h2>
                 <h4 className="text-sm text-center mb-4 w-full py-2 px-4 text-white bg-red-600 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    This DApp is built on the Polygon Mumbai Network
+                    This DApp is compatible with various Ethereum test networks
                 </h4>
                 {walletConnectionStatus && (
                     <div className="mb-4">
@@ -86,7 +96,7 @@ const RegisterOrganizationToken = ({ wallet }) => {
                                 type="text"
                                 value={tokenName}
                                 onChange={(e) => setTokenName(e.target.value)}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                className="mt-1 block w-full border rounded-md px-2 py-1 mt-1 rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                             />
                         </label>
                         <label className="block mt-2">
@@ -95,7 +105,7 @@ const RegisterOrganizationToken = ({ wallet }) => {
                                 type="text"
                                 value={tokenSymbol}
                                 onChange={(e) => setTokenSymbol(e.target.value)}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                className="mt-1 block w-full border rounded-md px-2 py-1 mt-1 rounded-md rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                             />
                         </label>
                         <label className="block mt-2">
@@ -104,7 +114,7 @@ const RegisterOrganizationToken = ({ wallet }) => {
                                 type="text"
                                 value={totalSupply}
                                 onChange={(e) => setTotalSupply(e.target.value)}
-                                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+                                className="mt-1 block w-full border rounded-md px-2 py-1 mt-1 rounded-md rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
                             />
                         </label>
                         <div className="flex flex-col items-center">
@@ -139,6 +149,7 @@ const RegisterOrganizationToken = ({ wallet }) => {
                     </>
 
                 )}
+                </div>
             </div>
         </div>
     );

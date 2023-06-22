@@ -71,6 +71,7 @@ contract TokenVesting {
         _stakeholderCategories[beneficiary] = category;
     }
 
+
     // Function to release tokens for the caller. (Can only be called by whitelisted addresses)
     function releaseTokens() external onlyWhitelisted {
         StakeholderCategory category = _stakeholderCategories[msg.sender];
