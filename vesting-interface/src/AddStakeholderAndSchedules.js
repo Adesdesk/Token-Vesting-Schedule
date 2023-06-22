@@ -31,8 +31,8 @@ const AddStakeholderAndSchedules = ({ wallet }) => {
   const handleCreateSchedule = async () => {
     try {
       const parsedTokens = ethers.utils.parseUnits(totalTokens.toString(), 0);
-      const parsedStart = Math.floor(new Date(releaseStart).getTime() / 1000); // Convert releaseStart to timestamp
-      const parsedEnd = Math.floor(new Date(releaseEnd).getTime() / 1000); // Convert releaseEnd to timestamp
+      const parsedStart = Math.floor(new Date(releaseStart).getTime() / 1000); // Converting releaseStart to timestamp
+      const parsedEnd = Math.floor(new Date(releaseEnd).getTime() / 1000); // Converting releaseEnd to timestamp
 
       const tx = await contract.createVestingSchedule(category, parsedTokens, parsedStart, parsedEnd);
       await tx.wait();
@@ -50,55 +50,55 @@ const AddStakeholderAndSchedules = ({ wallet }) => {
         </h2>
         <div className="flex flex-col items-center">
         
-          <label htmlFor="contractAddress" className="block mb-4 text-sm text-blue-600">
+          <label htmlFor="contractAddress" className="block mt-2 text-sm text-blue-600">
             Contract Address:  
           </label>
           <input
             type="text"
             id="contractAddress"
             placeholder="Paste your token vesting plan contract address"
-            className="mt-1 block w-full border rounded-md px-2 py-1 mt-1 rounded-md rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            className="block w-full border rounded-md px-2 py-1 mt-1 rounded-md rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
             value={contractAddress}
             onChange={(e) => setContractAddress(e.target.value)}
-          /> 
+          /> <br></br>
         
-          <label htmlFor="category" className="block mb-4 text-sm text-blue-600">
+          <label htmlFor="category" className="block mt-2 text-sm text-blue-600">
             Stakeholder Category:  
           </label>
           <input
             type="number"
             id="category"
             placeholder="0, 1, or 2 for Community, Validators, or Investors respectively"
-            className="mt-1 block w-full border rounded-md px-2 py-1 mt-1 rounded-md rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            className="block w-full border rounded-md px-2 py-1 mt-1 rounded-md rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-          /> 
+          /> <br></br>
         
-          <label htmlFor="totalTokens" className="block mb-4 text-sm text-blue-600">
+          <label htmlFor="totalTokens" className="block mt-2 text-sm text-blue-600">
             Total Tokens:
           </label>
           <input
             type="number"
             id="totalTokens"
             placeholder="Amount of tokens to release over time"
-            className="mt-1 block w-full border rounded-md px-2 py-1 mt-1 rounded-md rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            className="block w-full border rounded-md px-2 py-1 mt-1 rounded-md rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
             value={totalTokens}
             onChange={(e) => setTotalTokens(e.target.value)}
-          />
+          /> <br></br>
         
-          <label htmlFor="releaseStart" className="block mb-4 text-sm text-blue-600">
+          <label htmlFor="releaseStart" className="block mt-2 text-sm text-blue-600">
             Release Start:
           </label>
           <input
             type="date"
             id="releaseStart"
             placeholder="Select start date"
-            className="mt-1 block w-full border rounded-md px-2 py-1 mt-1 rounded-md rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            className="block w-full border rounded-md px-2 py-1 mt-1 rounded-md rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
             value={releaseStart}
             onChange={(e) => setReleaseStart(e.target.value)}
-          />
+          /><br></br>
         
-          <label htmlFor="releaseEnd" className="block mb-4 text-sm text-blue-600">
+          <label htmlFor="releaseEnd" className="block mt-2 text-sm text-blue-600">
             Release End: 
           </label>
           <input
@@ -108,7 +108,7 @@ const AddStakeholderAndSchedules = ({ wallet }) => {
             className="mt-1 block w-full border rounded-md px-2 py-1 mt-1 rounded-md rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
             value={releaseEnd}
             onChange={(e) => setReleaseEnd(e.target.value)}
-          />
+          /><br></br>
         
         <button
           className="bg-green-900 hover:bg-green-800 text-white font-medium px-4 py-2 rounded-md"
