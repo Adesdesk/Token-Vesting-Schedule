@@ -24,7 +24,7 @@ cd vesting-interface
 
 * Ensure that the terminal now points to the vesting-interface folder, then run the following command
 ```
-npm init
+npm install
 ```
 * When completed, run the command below to spin up the frontend app on your local computer's server.
 ```
