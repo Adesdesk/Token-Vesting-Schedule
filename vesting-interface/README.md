@@ -1,74 +1,53 @@
-# Getting Started with Create React App
+# Token-Vesting-Schedule - Frontend
+This is the frontend component of a decentralized application that provides a platform for organizations to create their custom token and corresponding vesting schedule.
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Description
 
-## Available Scripts
+The DApp consists of two smart contracts, one which enables an rganization's admin to spin off their custom ERC20 token contract, and the other which allows them to create custom token vesting plans for 3 categories of stakeholders namely; Community, Validators, and Investors. The same contract can be adopted by a variety of organizations as each has the liberty to create their token, which address is passed to the a token vesting contract that enables them create their vesting plans for the same token.
 
-In the project directory, you can run:
+Adding these categories of stakeholders is implemented using a custom data type, an enum which index can be supplied during function calls to specify appropriate categories to which an address should belong. Organization admins can add stakeholders and their corresponding vesting details. Vested tokens are released to beneficiary addresses in defined installments for withdrawal as each fragment of the timelock period elapses.
 
-### `npm start`
+Organizations' admins can whitelist stakeholder addresses to enable them withdraw their released tokens and susch whitelisted addresses can make withdrawals of released tokens, provided they have the address of the contract which is specific to the organization where they belong.
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+## Getting Started
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### Installing
 
-### `npm test`
+* Clone this repository to get an exact copy of this program on your computer.
+* Open the repository folder in your preferred command line interface. Using the terminal in VSCode is a good option.
+* Once in the project folder, navigate into the frontend application folder by running the command
+```
+cd vesting-interface
+```
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### Executing program
 
-### `npm run build`
+* Ensure that the terminal now points to the vesting-interface folder, then run the following command
+```
+npm init
+```
+* When completed, run the command below to spin up the frontend app on your local computer's server.
+```
+npm start
+```
+* The app will spring open in your default browser where you will have access to the user interface, connect an ethereum wallet and carry out various transactions.
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## Help
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Ensure to lookout for transaction status prompts as these are a major guide to the transaction frlow in using the app. The provide feedback that notify you when a transaction is in progress, successful or declined.
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## Authors
 
-### `npm run eject`
+Contributor(s) name(s) and contact info
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
-
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
-
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+Name: Adeola David Adelakun 
+Email: adesdesk@outlook.com
 
 
-##### 0x6B029ABDfAdA49cd645c96038DFfC23080De5C85 (single tranche)
-##### 0x552cC4A1dF08E5a17f7720dE457053574A9088cF (double tranche)
+## License
+
+This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the LICENSE.md file for details
+
+### Addresses to a sample organization's deployment of this DApp's contract
+##### 0x6B029ABDfAdA49cd645c96038DFfC23080De5C85 (single tranche token release version)
+##### 0x552cC4A1dF08E5a17f7720dE457053574A9088cF (double tranche token release version)
