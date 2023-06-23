@@ -34,7 +34,13 @@ npm start
 
 ## Help
 
-Ensure to lookout for transaction status prompts as these are a major guide to the transaction frlow in using the app. The provide feedback that notify you when a transaction is in progress, successful or declined.
+* The contracts sub-folder in the vesting-contract folder contains two versions of the token vesting contracts, namely 'TokenVesting.sol' and 'TokenVestingVII.sol'. Particularly, the TokenVestingVII.sol which has an implementation for token release in multiple tranches (installments) was used for integration to the frontend app. The second contract, 'TokenVesting.sol' is only an initial version I created, which released tokens in one tranche after the timelock elapses. This was improved upon in 'TokenVestingVII.sol' such that organization admins can specify the number of installments in which beneficiaries get the vested tokens, spread evenly accross the vesting period.
+
+* Since this DApp is built to support multiple custom contracts deployment, it is important to keep the address of the deployed contract within reach, so that users can use it to initiate interaction with the right contract.
+
+* In case of a misplaced address to a deployment of the smart contract for an organization, the address can be retrieved by checking the deployer's (admin) wallet's transaction history. Look out for the transaction associated with the contract deployment and it should contain the contract address.
+
+* Ensure to lookout for transaction status prompts as these are a major guide to the transaction frlow in using the app. The provide feedback that notify you when a transaction is in progress, successful or declined.
 
 ## Authors
 
@@ -48,3 +54,13 @@ Email: adesdesk@outlook.com
 ## License
 
 This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the LICENSE.md file for details
+
+
+## Suggestions for more features implementable on the DApp
+* Additional pages, or a robust user dashboard can be added to the frontend app to use the CustomToken contract instance for providing non-admin users (stakeholders) access to more details such as their token balances, token name, token symbol, and a token transfer interface.
+
+* An organization may choose to do a rework of the frontend app such that it already integrates with an instance of their deployed contracts, making it possible for their stakeholders to interact with the Dapp without having to supply the address of their organization's specific contract deployment. This version of the Dapp is implemented such that different organizations can deploy separate contracts using the same platform, and so stakeholders have to input their specific organization's contract address, to streamline their interaction to the relevant contract.
+
+* The token smart contract can also be customized to implement divisibility of the token, based on the decimal value that interests an organization.
+
+* Both contracts can be further customized to suit a wide variety of 'tokenomics' as an organization may dim fit for their tokens and crop of stakeholders.
