@@ -71,7 +71,6 @@ contract TokenVesting {
         _stakeholderCategories[beneficiary] = category;
     }
 
-
     // Function to release tokens for the caller. (Can only be called by whitelisted addresses)
     function releaseTokens() external onlyWhitelisted {
         StakeholderCategory category = _stakeholderCategories[msg.sender];
@@ -84,8 +83,12 @@ contract TokenVesting {
         require(tokensToRelease > 0, "No tokens available for release");
 
         schedule.releasedTokens += tokensToRelease;
-        _tokenContract.transfer(msg.sender, tokensToRelease);
+
+        bool transferSuccess = _tokenContract.transfer(msg.sender, tokensToRelease);
+        require(transferSuccess, "Token transfer failed");
     }
+
+
 
     // Function to calculate the number of tokens to release based on set vesting schedule
     function calculateTokensToRelease(VestingSchedule memory schedule) private view returns (uint256) {
@@ -97,7 +100,11 @@ contract TokenVesting {
         } else {
             uint256 timePassed = currentTimestamp - schedule.releaseStart;
             uint256 totalTime = schedule.releaseEnd - schedule.releaseStart;
-            return (schedule.totalTokens * timePassed) / totalTime - schedule.releasedTokens;
+            uint256 tokensPerSecond = schedule.totalTokens / totalTime;
+            uint256 tokensToRelease = timePassed * tokensPerSecond - schedule.releasedTokens;
+            return tokensToRelease;
         }
     }
+
+
 }
