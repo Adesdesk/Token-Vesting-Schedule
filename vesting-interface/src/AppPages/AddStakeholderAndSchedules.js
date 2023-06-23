@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import TokenVestingContract from '../contracts/TokenVestingVII.json';
+import NavigationBar from '../components/NavigationBar/NavigationBar.js';
 
 const AddStakeholderAndSchedules = ({ wallet }) => {
   const [contract, setContract] = useState(null);
@@ -11,6 +12,7 @@ const AddStakeholderAndSchedules = ({ wallet }) => {
   const [releaseEnd, setReleaseEnd] = useState('');
   const [numberOfInstallments, setNumberOfInstallments] = useState('');
   const [addressToAdd, setAddressToAdd] = useState('');
+  const [notice, setNotice] = useState('');
 
   useEffect(() => {
     // Initialize the contract instance
@@ -29,6 +31,7 @@ const AddStakeholderAndSchedules = ({ wallet }) => {
       initContract();
     }
   }, [contractAddress]);
+
   const handleButtonClick = async () => {
     try {
       if (contract) {
@@ -44,34 +47,41 @@ const AddStakeholderAndSchedules = ({ wallet }) => {
           parsedEnd,
           numberOfInstallments
         );
+        setNotice('Creating vesting schedule... Please wait.');
         await createScheduleTx.wait();
-        console.log('Vesting schedule created successfully!');
+        setNotice('Vesting schedule created successfully!');
 
         const categorizedTx = await contract.setCategorizedAddress(addressToAdd, category);
+        setNotice('Categorizing stakeholder address... Please wait.');
         await categorizedTx.wait();
-        console.log('Stakeholder address categorized successfully!');
+        setNotice('Stakeholder address categorized successfully!');
 
-        // Reset input fields
+        // Reset input fields and notice
         setAddressToAdd('');
         setCategory('');
         setTotalTokens('');
         setReleaseStart('');
         setReleaseEnd('');
         setNumberOfInstallments('');
+        setNotice('');
       }
     } catch (error) {
       console.error('Error handling button click:', error);
+      setNotice('An error occurred. Please try again.');
     }
   };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-green-900">
-      <div className="max-w-lg px-4 py-2 bg-white rounded-lg shadow-lg">
+      <NavigationBar />
+      <br></br>
+      <div className="max-w-lg px-4 mt-10 py-2 rounded-lg shadow-lg">
         <h2 className="text-2xl text-white bg-green-900 text-center font-bold rounded-md mb-2">
           Add Stakeholder and Create Vesting Schedule
         </h2>
         <div className="flex flex-col items-center">
-          <label htmlFor="contractAddress" className="block mt-2 text-sm text-red-600">
+        <div className="flex flex-col items-center">
+          <label htmlFor="contractAddress" className="block mt-2 text-sm text-white">
             Your Organization's Token Vesting Contract Address:
           </label>
           <input
@@ -152,15 +162,17 @@ const AddStakeholderAndSchedules = ({ wallet }) => {
             value={addressToAdd}
             onChange={(e) => setAddressToAdd(e.target.value)}
           />
+          {notice && <p className="text-red-600 text-center mb-2">{notice}</p>}
           <button
-            className="bg-green-900 hover:bg-green-800 text-white font-medium px-4 py-2 rounded-md mt-2"
+            className="bg-blue-700 hover:bg-blue-600 text-white font-medium px-4 py-2 rounded-md mt-2"
             onClick={handleButtonClick}
           >
             Add Stakeholder's Vesting Plan
           </button>
         </div>
       </div>
-    </div>
+      </div>
+      </div>
   );
 };
 

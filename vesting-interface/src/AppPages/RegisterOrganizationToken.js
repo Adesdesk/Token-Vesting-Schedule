@@ -3,6 +3,7 @@ import { ethers } from 'ethers';
 import CustomTokenContract from '../contracts/CustomToken.json';
 import TokenVestingContract from '../contracts/TokenVestingVII.json';
 import { useNavigate } from 'react-router-dom';
+import NavigationBar from '../components/NavigationBar/NavigationBar.js';
 
 
 const RegisterOrganizationToken = ({ wallet }) => {
@@ -36,7 +37,7 @@ const RegisterOrganizationToken = ({ wallet }) => {
             );
 
             const tokenContract = await tokenFactory.deploy(tokenName, tokenSymbol, totalSupply);
-            setDeploymentStatus('Contract deployment in progress...');
+            setDeploymentStatus('Contracts deployment in progress...');
             await tokenContract.deployTransaction.wait();
             setDeploymentStatus('Organization Token successfully created');
             setCustomTokenAddress(tokenContract.address);
@@ -48,7 +49,7 @@ const RegisterOrganizationToken = ({ wallet }) => {
                 signer
             );
             const vestingContract = await vestingFactory.deploy(tokenContract.address);
-            setDeploymentStatus('Creating your ornanization\'s custom token contract');
+            setDeploymentStatus('Creating your organization\'s custom token contract');
             await vestingContract.deployTransaction.wait();
             setDeploymentStatus('Your organization\'s token vesting plan has been successfully created. \n Please keep its contract address for future use');
             setTokenVestingAddress(vestingContract.address);
@@ -66,6 +67,7 @@ const RegisterOrganizationToken = ({ wallet }) => {
 
     return (
         <div>
+            <NavigationBar />
             <div className="flex flex-col items-left">
                 <button
                     className="bg-green-900 text-end text-white font-medium px-4 py-2"
@@ -76,7 +78,7 @@ const RegisterOrganizationToken = ({ wallet }) => {
             </div>
             <div className="flex flex-col items-center justify-center min-h-screen bg-green-900">
 
-                <div className="max-w-lg px-4 py-2 bg-white rounded-lg shadow-lg">
+                <div className="max-w-lg px-4 py-2 rounded-lg shadow-lg">
                     <h2 className="text-2xl text-center font-bold mb-2">
                         Register Your Organization By Creating Its Custom Token In Admin Capacity
                     </h2>
@@ -128,7 +130,7 @@ const RegisterOrganizationToken = ({ wallet }) => {
                         </div>
                     )}
                     {deploymentStatus && (
-                        <div className="mt-4 text-red-900 text-center">
+                        <div className="mt-4 text-yellow-500 text-center">
                             <p>{deploymentStatus}</p>
                         </div>
                     )}

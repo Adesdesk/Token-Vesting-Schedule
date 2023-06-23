@@ -15,3 +15,10 @@ code {
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@media (max-width: 768px) {
+  .bg-gray-800 {
+    background-color: transparent;
+  }
+}
+

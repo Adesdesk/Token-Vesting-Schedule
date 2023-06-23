@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import TokenVestingContract from '../contracts/TokenVestingVII.json';
+import NavigationBar from '../components/NavigationBar/NavigationBar.js';
 
 const WithdrawTokens = ({ wallet }) => {
   const [contract, setContract] = useState(null);
@@ -47,7 +48,8 @@ const WithdrawTokens = ({ wallet }) => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-green-900">
-      <div className="max-w-lg px-4 py-2 bg-white rounded-lg shadow-lg">
+      <NavigationBar />
+      <div className="max-w-lg px-4 py-2 rounded-lg shadow-lg">
         <h2 className="text-2xl text-white bg-green-900 text-center font-bold rounded-md mb-2">
           Withdraw Tokens
         </h2>

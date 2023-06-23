@@ -71,4 +71,4 @@ This section has moved here: [https://facebook.github.io/create-react-app/docs/t
 
 
 ##### 0x6B029ABDfAdA49cd645c96038DFfC23080De5C85 (single tranche)
-##### 
+##### 0x552cC4A1dF08E5a17f7720dE457053574A9088cF (double tranche)

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import TokenVestingContract from '../contracts/TokenVestingVII.json';
+import NavigationBar from '../components/NavigationBar/NavigationBar.js';
 
 const AdminAddWhitelistedAddresses = ({ wallet }) => {
   const [contract, setContract] = useState(null);
@@ -46,7 +47,8 @@ const AdminAddWhitelistedAddresses = ({ wallet }) => {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-green-900">
-      <div className="max-w-lg px-4 py-2 bg-white rounded-lg shadow-lg">
+      <NavigationBar />
+      <div className="max-w-lg px-4 py-2 rounded-lg shadow-lg">
         <h2 className="text-2xl text-white bg-green-900 text-center font-bold rounded-md mb-2">
           Add Addresses (Admin)
         </h2>
@@ -80,12 +82,12 @@ const AdminAddWhitelistedAddresses = ({ wallet }) => {
 
           {transactionHash && (
             <div className="mt-4">
-              <p className="text-red-900">Address(es) added successfully! Transaction Hash:</p>
+              <p className="text-yellow-500">Address(es) added successfully! Transaction Hash:</p>
               <a
                 href={`https://etherscan.io/tx/${transactionHash}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-red-900"
+                className="text-yellow-500"
               >
                 {transactionHash}
               </a>
