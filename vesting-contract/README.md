@@ -60,5 +60,6 @@ Email: adesdesk@outlook.com
 This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the LICENSE.md file for details
 
 ### Addresses to a sample organization's deployment of this DApp's contract
-##### 0x6B029ABDfAdA49cd645c96038DFfC23080De5C85 (single tranche token release version)
-##### 0x552cC4A1dF08E5a17f7720dE457053574A9088cF (double tranche token release version)
+#####  (single tranche token release version)
+##### 0x47274A4352f24EE341ac04ECfCC0dd6b831D5d0B (double tranche token release version)
+

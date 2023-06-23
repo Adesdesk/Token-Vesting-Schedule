@@ -74,7 +74,7 @@ const AdminAddWhitelistedAddresses = ({ wallet }) => {
             onChange={(e) => setAddressesToAdd(e.target.value)}
           ></textarea>
           <button
-            className="bg-green-900 hover:bg-green-800 text-white font-medium px-4 py-2 rounded-md mt-2"
+            className="bg-blue-500 hover:bg-blue-500 text-white font-medium px-4 py-2 rounded-md mt-2"
             onClick={handleAddAddresses}
           >
             Add Addresses

@@ -39,7 +39,7 @@ const RegisterOrganizationToken = ({ wallet }) => {
             const tokenContract = await tokenFactory.deploy(tokenName, tokenSymbol, totalSupply);
             setDeploymentStatus('Contracts deployment in progress...');
             await tokenContract.deployTransaction.wait();
-            setDeploymentStatus('Organization Token successfully created');
+            setDeploymentStatus('Organization Token created. Deploying your vesting contract next...');
             setCustomTokenAddress(tokenContract.address);
             console.log('Organization Token address is:', tokenContract.address);
             console.log('Organization Token creation transaction receipt:', tokenContract.deployTransaction);
@@ -137,19 +137,17 @@ const RegisterOrganizationToken = ({ wallet }) => {
                 </div>
                 <div>
                     {tokenVestingAddress && (
-                        <>
-                            <div className="mt-4 text-white text-center">
-                                <p>Your organization's token vesting contract address: {tokenVestingAddress}</p>
-                                <p>Kindly copy and store this address for admin use in future transacions</p>
-                            </div>
+
+                        <div className="mt-4 text-white text-center">
+                            <p>Your organization's token vesting contract address: {tokenVestingAddress}</p>
+                            <p>Kindly copy and store this address for admin use in future transacions</p>
 
                             <button
                                 className="bg-blue-700 hover:bg-blue-600 text-white item-center font-bold py-2 px-4 rounded mt-4"
                                 onClick={handleNavigateToTokenVesting}
                             >
                                 Ready! Click here to add stakeholders and vesting plans </button>
-                        </>
-
+                        </div>
                     )}
                 </div>
             </div>

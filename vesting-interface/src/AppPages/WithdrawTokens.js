@@ -71,7 +71,7 @@ const WithdrawTokens = ({ wallet }) => {
           />
 
           <button
-            className="bg-green-900 hover:bg-green-800 text-white font-medium px-4 py-2 rounded-md mt-2"
+            className="bg-blue-500 hover:bg-blue-600 text-white font-medium px-4 py-2 rounded-md mt-2"
             onClick={handleWithdrawTokens}
           >
             Withdraw Tokens
