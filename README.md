@@ -56,7 +56,7 @@ Email: adesdesk@outlook.com
 This project is licensed under the GNU GENERAL PUBLIC LICENSE - see the LICENSE.md file for details
 
 
-## Suggestions for more features implementable on the DApp
+## Suggestions for more features implementable on this DApp
 * Additional pages, or a robust user dashboard can be added to the frontend app to use the CustomToken contract instance for providing non-admin users (stakeholders) access to more details such as their token balances, token name, token symbol, and a token transfer interface.
 
 * An organization may choose to do a rework of the frontend app such that it already integrates with an instance of their deployed contracts, making it possible for their stakeholders to interact with the Dapp without having to supply the address of their organization's specific contract deployment. This version of the Dapp is implemented such that different organizations can deploy separate contracts using the same platform, and so stakeholders have to input their specific organization's contract address, to streamline their interaction to the relevant contract.
