@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 import CustomTokenContract from '../contracts/CustomToken.json';
-import TokenVestingContract from '../contracts/TokenVesting.json';
+import TokenVestingContract from '../contracts/TokenVestingVII.json';
 import { useNavigate } from 'react-router-dom';
 
 

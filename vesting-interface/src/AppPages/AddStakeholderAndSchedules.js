@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
-import TokenVestingContract from '../contracts/TokenVesting.json';
+import TokenVestingContract from '../contracts/TokenVestingVII.json';
 
 const AddStakeholderAndSchedules = ({ wallet }) => {
   const [contract, setContract] = useState(null);
@@ -9,7 +9,7 @@ const AddStakeholderAndSchedules = ({ wallet }) => {
   const [totalTokens, setTotalTokens] = useState('');
   const [releaseStart, setReleaseStart] = useState('');
   const [releaseEnd, setReleaseEnd] = useState('');
-  // const [whitelistedAddresses, setWhitelistedAddresses] = useState([]);
+  const [numberOfInstallments, setNumberOfInstallments] = useState('');
   const [addressToAdd, setAddressToAdd] = useState('');
 
   useEffect(() => {
@@ -36,39 +36,33 @@ const AddStakeholderAndSchedules = ({ wallet }) => {
         const parsedTokens = ethers.utils.parseUnits(totalTokens.toString(), 0);
         const parsedStart = Math.floor(new Date(releaseStart).getTime() / 1000);
         const parsedEnd = Math.floor(new Date(releaseEnd).getTime() / 1000);
-  
+
         const createScheduleTx = await contract.createVestingSchedule(
           category,
           parsedTokens,
           parsedStart,
-          parsedEnd
+          parsedEnd,
+          numberOfInstallments
         );
         await createScheduleTx.wait();
         console.log('Vesting schedule created successfully!');
-  
-        // Call whitelistAddresses and setCategorizedAddress functions
-        //const whitelistTx = await contract.whitelistAddresses([addressToAdd]);
+
         const categorizedTx = await contract.setCategorizedAddress(addressToAdd, category);
-        // await whitelistTx.wait();
         await categorizedTx.wait();
-        //console.log('Address whitelisted successfully!');
         console.log('Stakeholder address categorized successfully!');
-  
-        // // Update whitelisted addresses
-        // const updatedWhitelistedAddresses = await contract.getWhitelistedAddresses();
-        // setWhitelistedAddresses(updatedWhitelistedAddresses);
-  
+
         // Reset input fields
         setAddressToAdd('');
         setCategory('');
         setTotalTokens('');
         setReleaseStart('');
         setReleaseEnd('');
+        setNumberOfInstallments('');
       }
     } catch (error) {
       console.error('Error handling button click:', error);
     }
-  };      
+  };
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen bg-green-900">
@@ -78,7 +72,7 @@ const AddStakeholderAndSchedules = ({ wallet }) => {
         </h2>
         <div className="flex flex-col items-center">
           <label htmlFor="contractAddress" className="block mt-2 text-sm text-red-600">
-            Your Organization's Token Vesting Contract Address:  
+            Your Organization's Token Vesting Contract Address:
           </label>
           <input
             type="text"
@@ -88,9 +82,9 @@ const AddStakeholderAndSchedules = ({ wallet }) => {
             value={contractAddress}
             onChange={(e) => setContractAddress(e.target.value)}
           /> <br></br>
-        
+
           <label htmlFor="category" className="block mt-2 text-sm text-blue-600">
-            Stakeholder Category:  
+            Stakeholder Category:
           </label>
           <input
             type="number"
@@ -100,9 +94,9 @@ const AddStakeholderAndSchedules = ({ wallet }) => {
             value={category}
             onChange={(e) => setCategory(e.target.value)}
           /> <br></br>
-        
+
           <label htmlFor="totalTokens" className="block mt-2 text-sm text-blue-600">
-            Amount of Tokens t release:
+            Amount of Tokens to release:
           </label>
           <input
             type="number"
@@ -112,9 +106,22 @@ const AddStakeholderAndSchedules = ({ wallet }) => {
             value={totalTokens}
             onChange={(e) => setTotalTokens(e.target.value)}
           /> <br></br>
-        
+
+          <label htmlFor="numberOfInstallments" className="block mt-2 text-sm text-blue-600">
+            Number of Installments:
+          </label>
+          <input
+            type="number"
+            id="numberOfInstallments"
+            placeholder="Number of installments that tokens should be released"
+            className="block w-full border rounded-md px-2 py-1 mt-1 rounded-md rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            value={numberOfInstallments}
+            onChange={(e) => setNumberOfInstallments(e.target.value)}
+          /><br></br>
+
+
           <label htmlFor="releaseStart" className="block mt-2 text-sm text-blue-600">
-          Token Release Start Date:
+            Token Release Start Date:
           </label>
           <input
             type="date"
@@ -123,9 +130,9 @@ const AddStakeholderAndSchedules = ({ wallet }) => {
             value={releaseStart}
             onChange={(e) => setReleaseStart(e.target.value)}
           /><br></br>
-        
+
           <label htmlFor="releaseEnd" className="block mt-2 text-sm text-blue-600">
-          Token Release End Date: 
+            Token Release End Date:
           </label>
           <input
             type="date"
@@ -134,26 +141,23 @@ const AddStakeholderAndSchedules = ({ wallet }) => {
             value={releaseEnd}
             onChange={(e) => setReleaseEnd(e.target.value)}
           /><br></br>
-
-          {/* <div className="mt-4"> */}
-            <label htmlFor="addressToAdd" className="block mt-2 text-sm text-blue-600">
-              Address to add to defined category:
-            </label>
-            <input
-              type="text"
-              id="addressToAdd"
-              placeholder="Address to categorize as Community, Validators, or Investors (0, 1, or 2 respectively)"
-              className="block w-full border rounded-md px-2 py-1 mt-1 rounded-md rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
-              value={addressToAdd}
-              onChange={(e) => setAddressToAdd(e.target.value)}
-            />
-            <button
-              className="bg-green-900 hover:bg-green-800 text-white font-medium px-4 py-2 rounded-md mt-2"
-              onClick={handleButtonClick}
-            >
-              Whitelist & Add Stakeholder's Vesting Plan
-            </button>
-          {/* </div> */}
+          <label htmlFor="addressToAdd" className="block mt-2 text-sm text-blue-600">
+            Address to add to defined category:
+          </label>
+          <input
+            type="text"
+            id="addressToAdd"
+            placeholder="Address to categorize as Community, Validators, or Investors"
+            className="block w-full border rounded-md px-2 py-1 mt-1 rounded-md rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+            value={addressToAdd}
+            onChange={(e) => setAddressToAdd(e.target.value)}
+          />
+          <button
+            className="bg-green-900 hover:bg-green-800 text-white font-medium px-4 py-2 rounded-md mt-2"
+            onClick={handleButtonClick}
+          >
+            Add Stakeholder's Vesting Plan
+          </button>
         </div>
       </div>
     </div>

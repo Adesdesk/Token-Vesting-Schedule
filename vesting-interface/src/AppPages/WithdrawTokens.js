@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
-import TokenVestingContract from '../contracts/TokenVesting.json';
+import TokenVestingContract from '../contracts/TokenVestingVII.json';
 
 const WithdrawTokens = ({ wallet }) => {
   const [contract, setContract] = useState(null);
